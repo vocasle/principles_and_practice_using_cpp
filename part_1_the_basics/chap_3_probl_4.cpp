@@ -1,9 +1,9 @@
 //
 // Created by Nikita Elsakov on 05.03.2020.
+// This program finds guessed number in 7 attempts
 //
 
 #include <iostream>
-#include <vector>
 
 int getMedian(int begin, int end)
 {
@@ -12,7 +12,23 @@ int getMedian(int begin, int end)
 
 int main()
 {
-	std::cout << "Think about an integer between 0 and 100\n";
+	constexpr auto limit = 7;
+	auto floor = 0;
+	auto ceil = 101;
+	auto median = getMedian(floor, ceil);
+	std::cout << "Think about an integer between 1 and 100\n";
+	for (auto i = 0; i < limit; ++i)
+	{
+		auto answer = ' ';
+		std::cout << "Is " << median << " greater then guessed number?\n";
+		std::cin >> answer;
+		if (answer == 'y')
+			ceil = median;
+		else
+			floor = median;
+		median = getMedian(floor, ceil);
+	}
+	std::cout << "The number guessed is: " << median << std::endl;
 
 	return 0;
 }
