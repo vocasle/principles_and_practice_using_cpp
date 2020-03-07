@@ -13,7 +13,7 @@ int main()
 	auto amount = 0;
 	constexpr auto numOfSquares = 64;
 	std::cin >> amount;
-	auto sum = 0;
+	unsigned long sum = 0;
 	auto cnt = 0;
 	for (; cnt < numOfSquares; ++cnt)
 	{
