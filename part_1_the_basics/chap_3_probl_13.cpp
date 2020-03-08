@@ -9,7 +9,10 @@
 int main()
 {
 	std::vector<int> primes;
-	for (auto i = 2; i < 101; ++i)
+	auto n = 0;
+	std::cout << "Enter amount of primes to find:\n";
+	std::cin >> n;
+	for (auto i = 2; i < n * 10; ++i)
 		primes.push_back(i);
 
 	for (auto it = primes.begin(); it != primes.end();)
@@ -25,8 +28,14 @@ int main()
 		}
 	}
 
+	auto cnt = 0;
 	for (auto&& prime : primes)
+	{
 		std::cout << prime << ' ';
+		if (cnt == n)
+			break;
+		++cnt;
+	}
 	std::cout << std::endl;
 	return 0;
 }
