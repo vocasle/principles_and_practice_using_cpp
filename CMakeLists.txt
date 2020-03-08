@@ -12,3 +12,5 @@ add_executable(p1c3pr6 part_1_the_basics/chap_3_probl_6.cpp part_1_the_basics/ch
 add_executable(p1c3pr7 part_1_the_basics/chap_3_probl_7.cpp)
 add_executable(p1c3pr8 part_1_the_basics/chap_3_probl_8.cpp)
 add_executable(p1c3pr10 part_1_the_basics/chap_3_probl_10.cpp)
+add_executable(p1c3pr11 part_1_the_basics/chap_3_probl_11.cpp)
+add_executable(p1c3pr13 part_1_the_basics/chap_3_probl_13.cpp)
