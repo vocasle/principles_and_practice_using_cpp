@@ -3,9 +3,7 @@
 // This program finds the mode of the sequence of numbers
 //
 
-#include <iostream>
-#include <vector>
-#include <map>
+#include "chap_3_probl_16.h"
 
 int main()
 {
@@ -15,20 +13,7 @@ int main()
 	std::vector<int> numbers;
 	for (auto i = 0; std::cin >> i;)
 		numbers.push_back(i);
-	std::map<int, int> occurrences;
-	for (auto&& number : numbers)
-		occurrences[number]++;
-	auto mode = 0;
-	auto numOfRepeats = 0;
-	for (auto&& occurrence : occurrences)
-	{
-		if (numOfRepeats < occurrence.second)
-		{
-			numOfRepeats = occurrence.second;
-			mode = occurrence.first;
-		}
-	}
-	std::cout << "The mode is: " << mode << std::endl;
+	std::cout << "The mode is: " << findMode(numbers) << std::endl;
 	return 0;
 }
 
