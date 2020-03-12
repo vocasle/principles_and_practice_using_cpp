@@ -4,7 +4,7 @@
 // This program finds mode, minimum and maximum (lexicographically) in set of strings
 //
 
-#include "chap_3_probl_16.h"
+#include "problem_16.h"
 #include <string>
 
 int main()

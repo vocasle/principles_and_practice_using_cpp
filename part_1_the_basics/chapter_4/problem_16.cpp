@@ -3,7 +3,7 @@
 // This program finds the mode of the sequence of numbers
 //
 
-#include "chap_3_probl_16.h"
+#include "problem_16.h"
 
 int main()
 {

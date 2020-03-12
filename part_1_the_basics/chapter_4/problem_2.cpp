@@ -9,7 +9,7 @@
 int main()
 {
 	std::vector<double> temps;
-	for (double temp; std::cin >> temp;)
+	for (double temp = 0; std::cin >> temp;)
 	{
 		temps.push_back(temp);
 	}

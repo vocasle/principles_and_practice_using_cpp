@@ -4,7 +4,7 @@
 // Numbers can be spelled-out values. E.g. one two + or 1 2 +
 //
 
-#include "chap_3_probl_6.h"
+#include "problem_6.h"
 #include <cstdlib>
 #include <fstream>
 

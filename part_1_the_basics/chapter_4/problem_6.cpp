@@ -7,7 +7,7 @@
 // to digit
 //
 
-#include "chap_3_probl_6.h"
+#include "problem_6.h"
 
 int main()
 {
