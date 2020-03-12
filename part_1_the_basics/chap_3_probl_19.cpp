@@ -26,8 +26,26 @@ int main()
 		scores.push_back(score);
 	}
 
-	for (auto i = 0; i < names.size(); ++i)
-		std::cout << names.at(i) << ' ' << scores.at(i) << '\n';
+	std::cout << "Enter the name for which you want to find a score or enter"
+			  << " a score for which you want to find a name:\n";
+	std::cin >> name;
+	try
+	{
+		score = std::stoi(name);
+		auto it = std::find(scores.begin(), scores.end(), score);
+		if (it == scores.end())
+			std::cerr << "'" << score << "' not found.\n";
+		else
+			std::cout << "Name for score " << score << " is: " << names.at(it - scores.begin()) << '\n';
+	}
+	catch (std::invalid_argument& e)
+	{
+		auto it = std::find(names.begin(), names.end(), name);
+		if (it == names.end())
+			std::cerr << "'" << name << "' not found.\n";
+		else
+			std::cout << "Score for " << name << " is: " << scores.at(it - names.begin()) << '\n';
+	}
 	return 0;
 }
 
