@@ -8,13 +8,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <regex>
 
-bool isInteger(const std::string& value)
+bool isDouble(const std::string& value)
 {
-	bool isInteger = true;
-	for (auto&& c : value)
-		isInteger = isInteger && std::isdigit(c);
-	return isInteger;
+	std::regex regex("\\d*\\.\\d*|\\d*");
+	return std::regex_match(value.begin(), value.end(), regex);
 }
 
 int main()
@@ -28,26 +27,32 @@ int main()
 	std::string input = "";
 	// flush cin
 	std::getline(std::cin, input);
-	std::cout << "Please enter some integers (press '|' to stop):\n";
-	std::vector<int32_t> numbers;
+	std::cout << "Please enter some real numbers (press '|' to stop):\n";
+	std::vector<double> numbers;
 	for (; std::cin >> input;)
 	{
 		if (input == exitChar)
 			break;
-		if (isInteger(input))
-			numbers.push_back(std::stoi(input));
+		if (isDouble(input))
+			numbers.push_back(std::stod(input));
 		else
-			throw std::runtime_error("'" + input + "' is not an integer");
+			throw std::runtime_error("'" + input + "' is not a real number");
 	}
 	if (n > numbers.size())
 		throw std::runtime_error("Number of values (" + std::to_string(n)
-			+ ") is less than number of entered integers ("
+			+ ") is less than number of entered real numbers ("
 			+ std::to_string(numbers.size()) + ").");
-	int32_t sum = 0;
+	double sum = 0;
 	for (auto it = numbers.begin(); it != (numbers.begin() + n); ++it)
 		sum += *it;
 	std::cout << "Sum of first " << n
-			  << " integers is: " << sum << '\n';
+			  << " real numbers is: " << sum
+			  << "\nAdjacent differences:\n";
+	for (auto it = numbers.begin() + 1; it != numbers.end(); ++it)
+	{
+		std::cout << *it - *(it - 1) << ' ';
+	}
+	std::cout << std::endl;
 	return 0;
 }
 
