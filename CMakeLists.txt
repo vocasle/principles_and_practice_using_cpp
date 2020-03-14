@@ -3,7 +3,7 @@ project(principles_and_practice_using_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(p1c4 part_1_the_basics/chapter_4/drill.cpp)
+add_executable(p1c4drill part_1_the_basics/chapter_4/drill.cpp)
 add_executable(p1c4pr2 part_1_the_basics/chapter_4/problem_2.cpp)
 add_executable(p1c4pr3 part_1_the_basics/chapter_4/problem_3.cpp)
 add_executable(p1c4pr4 part_1_the_basics/chapter_4/problem_4.cpp)
@@ -18,3 +18,6 @@ add_executable(p1c4pr16 part_1_the_basics/chapter_4/problem_16.cpp part_1_the_ba
 add_executable(p1c4pr17 part_1_the_basics/chapter_4/problem_17.cpp)
 add_executable(p1c4pr18 part_1_the_basics/chapter_4/problem_18.cpp)
 add_executable(p1c4pr19 part_1_the_basics/chapter_4/problem_19.cpp)
+
+add_executable(p1c5pr2 part_1_the_basics/chapter_5/problem_2.cpp)
+add_executable(p1c5pr8 part_1_the_basics/chapter_5/problem_8.cpp)
