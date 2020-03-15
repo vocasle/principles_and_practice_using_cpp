@@ -9,7 +9,7 @@
 #include <vector>
 #include <sstream>
 
-int main()
+void printIntro()
 {
 	std::cout << "Welcome to Bulls and Cows game!\n"
 			  << "Try to guess 4 integers in range from 0 to 9.\n"
@@ -20,64 +20,94 @@ int main()
 			  << "the number (3).\n"
 			  << "You can guess 15 times.\n"
 			  << "Good luck!\n";
-	constexpr const auto digits = 4;
-	constexpr const auto limit = 15;
+}
+std::vector<int32_t> getReferenceNumbers(int32_t length)
+{
 	std::random_device rd;
 	std::default_random_engine engine(rd());
 	std::uniform_int_distribution<int32_t> uniformIntDistribution(0, 9);
 	std::vector<int32_t> numbers;
-	while (numbers.size() != digits)
+	while (numbers.size() != length)
 	{
 		auto number = uniformIntDistribution(engine);
 		if (std::find(numbers.begin(), numbers.end(), number) == numbers.end())
 			numbers.push_back(number);
 	}
-	bool hasWon = false;
-	auto numOfTries = 0;
-	while (not hasWon)
+	return numbers;
+}
+std::vector<int32_t> getGuessedNumbers(const int digits)
+{
+	std::cout << "Enter 4 numbers from 0 to 9:\n";
+	std::vector<int32_t> guessedNumbers;
+	std::string input{};
+	std::cin >> input;
+	guessedNumbers.reserve(digits);
+	for (auto i = 0; i < digits; ++i)
+		guessedNumbers.push_back(input[i] - '0');
+	return guessedNumbers;
+}
+
+bool isGuessCorrect(const int length, const std::vector<int32_t>& referenceNumbers)
+{
+	auto guessedNumbers = getGuessedNumbers(length);
+	auto bulls = 0;
+	auto cows = 0;
+	for (auto i = 0; i < length; ++i)
 	{
-		if (numOfTries > limit)
-			break;
-		std::cout << "Enter 4 numbers from 0 to 9:\n";
-		int32_t guessedNumbers[digits];
-		std::string input = "";
-		std::cin >> input;
-		for (auto i = 0; i < digits; ++i)
-			guessedNumbers[i] = input[i] - '0';
-		auto bulls = 0;
-		auto cows = 0;
-		for (auto i = 0; i < digits; ++i)
+		if (guessedNumbers[i] == referenceNumbers[i])
+			++bulls;
+		else
 		{
-			if (guessedNumbers[i] == numbers[i])
-				++bulls;
-			else
+			for (auto j = 0; j < length; ++j)
 			{
-				for (auto j = 0; j < digits; ++j)
-				{
-					if (j == i)
-						continue;
-					else if (numbers[i] == guessedNumbers[j])
-						++cows;
-				}
+				if (j == i)
+					continue;
+				else if (referenceNumbers[i] == guessedNumbers[j])
+					++cows;
 			}
 		}
-		hasWon = bulls == digits;
-		std::cout << "Bulls: " << bulls
-				  << ", Cows: " << cows << '\n';
-		++numOfTries;
 	}
-	if (not hasWon)
+
+	std::cout << "Bulls: " << bulls
+			  << ", Cows: " << cows << '\n';
+	return bulls == length;
+}
+
+int main()
+{
+	printIntro();
+	constexpr const auto digits = 4;
+	constexpr const auto limit = 15;
+	auto wantsToPlay = true;
+	while (wantsToPlay)
 	{
-		std::cout << "You lost. The number was: ";
-		std::ostringstream os;
-		for (auto&& n : numbers)
-			os << n;
-		std::cout << os.str() << '\n';
-	}
-	else
-	{
-		std::cout << "Congratulations! You won! You tried " << numOfTries
-				  << " times.\n";
+		std::vector<int32_t> numbers = getReferenceNumbers(digits);
+		bool hasWon = false;
+		auto numOfTries = 0;
+		while (not hasWon)
+		{
+			if (numOfTries > limit)
+				break;
+			hasWon = isGuessCorrect(digits, numbers);
+			++numOfTries;
+		}
+		if (not hasWon)
+		{
+			std::cout << "You lost. The number was: ";
+			std::ostringstream os;
+			for (auto&& n : numbers)
+				os << n;
+			std::cout << os.str() << '\n';
+		}
+		else
+		{
+			std::cout << "Congratulations! You won! You tried " << numOfTries
+					  << " times.\n";
+		}
+		std::cout << "Do you want to try again (y/n)? ";
+		char answer = 'y';
+		std::cin >> answer;
+		wantsToPlay = answer == 'y';
 	}
 	return 0;
 }
