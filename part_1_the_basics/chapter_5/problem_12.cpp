@@ -8,6 +8,8 @@
 #include <random>
 #include <vector>
 #include <sstream>
+#include <ciso646>
+#include <regex>
 
 void printIntro()
 {
@@ -21,6 +23,13 @@ void printIntro()
 			  << "You can guess 15 times.\n"
 			  << "Good luck!\n";
 }
+
+bool isInputValid(const std::string& input)
+{
+	std::regex regex("\\d\\d\\d\\d");
+	return std::regex_match(input.begin(), input.end(), regex);
+}
+
 std::vector<int32_t> getReferenceNumbers(int32_t length)
 {
 	std::random_device rd;
@@ -37,10 +46,13 @@ std::vector<int32_t> getReferenceNumbers(int32_t length)
 }
 std::vector<int32_t> getGuessedNumbers(const int digits)
 {
-	std::cout << "Enter 4 numbers from 0 to 9:\n";
-	std::vector<int32_t> guessedNumbers;
 	std::string input{};
-	std::cin >> input;
+	while (not isInputValid(input))
+	{
+		std::cout << "Enter 4 numbers from 0 to 9:\n";
+		std::cin >> input;
+	}
+	std::vector<int32_t> guessedNumbers;
 	guessedNumbers.reserve(digits);
 	for (auto i = 0; i < digits; ++i)
 		guessedNumbers.push_back(input[i] - '0');
