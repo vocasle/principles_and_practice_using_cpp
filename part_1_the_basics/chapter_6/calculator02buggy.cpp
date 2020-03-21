@@ -92,6 +92,7 @@ Token Token_stream::get()
 	case '}':
 	case '-':
 	case '*':
+	case '!':
 	case '/':
 		return Token(ch);        // let each character represent itself
 	case '.':
@@ -103,6 +104,7 @@ Token Token_stream::get()
 	case '5':
 	case '6':
 	case '7':
+	case '8':
 	case '9':
 	{
 		cin.putback(ch);         // put digit back into the input stream
@@ -122,7 +124,7 @@ Token_stream ts;        // provides get() and putback()
 //------------------------------------------------------------------------------
 
 double expression();    // declaration so that primary() can call expression()
-
+double factorial(double); // declaration so that primary() can call factorial()
 //------------------------------------------------------------------------------
 
 // deal with numbers and parentheses
@@ -136,17 +138,35 @@ double primary()
 		double d = expression();
 		t = ts.get();
 		if (t.kind != ')') error("')' expected");
-		return d;
+		t = ts.get();
+		if (t.kind != '!')
+		{
+			ts.putback(t);
+			return d;
+		}
+		return factorial(d); // handle '(' expression ')' '!'
 	}
 	case '{': // handle '{' expression '}'
 	{
 		double d = expression();
 		t = ts.get();
 		if (t.kind != '}') error("'}' expected");
-		return d;
+		t = ts.get();
+		if (t.kind != '!')
+		{
+			ts.putback(t);
+			return d;
+		}
+		return factorial(d); // handle '(' expression ')' '!'
 	}
 	case '8':            // we use '8' to represent a number
-		return t.value;  // return the number's value
+	{
+		auto d = t.value;
+		t = ts.get();
+		if (t.kind == '!') return factorial(d); // return the number's factorial
+		else ts.putback(t);
+		return d; // return the number's value
+	}
 	default:
 		error("primary expected");
 	}
@@ -184,7 +204,6 @@ double term()
 }
 
 //------------------------------------------------------------------------------
-
 // deal with + and -
 double expression()
 {
@@ -212,12 +231,29 @@ double expression()
 
 //------------------------------------------------------------------------------
 
+// deal with !
+double factorial(double d)
+{
+	auto i = static_cast<int32_t>(d);
+	if (i != d)
+		error("'!' could be used only on integers");
+	if (i == 0)
+		return 1.0; // factorial of 0 is 1
+	for (auto j = (i - 1); j > 1; --j)
+		i *= j;
+	return static_cast<double>(i);
+}
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+
 int main()
 try
 {
 	cout << "Welcome to our simple calculator.\n"
 		 << "Please enter expressions using floating-point numbers.\n"
 		 << "Supported operators are:\n"
+		 << "! - for calculating factorial;\n"
 		 << "* - for multiplication;\n"
 		 << "/ - for division;\n"
 		 << "+ - for summation;\n"
