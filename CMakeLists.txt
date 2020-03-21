@@ -26,3 +26,4 @@ add_executable(p1c5pr12 part_1_the_basics/chapter_5/problem_12.cpp)
 add_executable(p1c5pr15 part_1_the_basics/chapter_5/problem_15.cpp)
 
 add_executable(p1c6pr1 part_1_the_basics/chapter_6/calculator02buggy.cpp)
+add_executable(p1c6pr4 part_1_the_basics/chapter_6/problem_4.cpp)
