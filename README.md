@@ -7,5 +7,6 @@ This repository contains my implementation of solutions for problems listed in t
 1. Part I: The Basics
    - [X] Chapter 4
    - [X] Chapter 5
-   - [ ] Chapter 6
+   - [X] Chapter 6
+   - [ ] Chapter 7
    
