@@ -26,7 +26,7 @@ void printIntro()
 
 bool isInputValid(const std::string& input)
 {
-	std::regex regex("\\d\\d\\d\\d");
+	std::regex regex(R"(\d\d\d\d)");
 	return std::regex_match(input.begin(), input.end(), regex);
 }
 
