@@ -1,0 +1,17 @@
+# This file contains grammar for bitwise logical expressions
+
+Expression
+    OrExpression | OrExpression
+OrExpression
+    Term
+    XorExpression ^ XorExpression
+XorExpression
+    Term & Term
+Term
+    Primary
+    ! Primary
+    ~ Primary
+Primary
+    x
+    y
+    Expression
