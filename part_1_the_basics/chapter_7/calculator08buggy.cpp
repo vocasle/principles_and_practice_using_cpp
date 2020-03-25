@@ -30,7 +30,8 @@
 		( Expression )
 		- Primary
 		+ Primary
-		sqrt( Primary )
+		sqrt( Expression )
+		pow( Expression, Expression )
 	Number:
 		floating-point-literal
 */
@@ -66,6 +67,7 @@ const char print = ';';
 const char number = '8';
 const char name = 'a';
 const char square_root = 'R';
+const char power = 'P';
 
 // Returns a Token from buffers if it is not empty or gets a Token from std::cin
 Token Token_stream::get()
@@ -82,6 +84,7 @@ Token Token_stream::get()
 	case '/':
 	case '%':
 	case ';':
+	case ',':
 	case '=':
 		return Token(ch);
 	case '.':
@@ -115,6 +118,8 @@ Token Token_stream::get()
 				return Token(quit);
 			if (s == "sqrt")
 				return Token(square_root);
+			if (s == "pow")
+				return Token(power);
 			return Token(name, s);
 		}
 		error("Bad token");
@@ -206,10 +211,27 @@ double primary()
 		return t.value;
 	case square_root:
 	{
-		auto d = primary();
+		auto d = expression();
 		if (d < 0)
 			error("square root is defined for non negative numbers");
 		return sqrt(d);
+	}
+	case power:
+	{
+		t = ts.get();
+		if (t.kind != '(')
+			error("'(' expected after pow");
+		double base = expression();
+		t = ts.get();
+		if (t.kind != ',') 
+			error("',' expected");
+		auto exponent = expression();
+		if (static_cast<int32_t>(exponent) != exponent)
+			error("exponent for pow function must be an iteger");
+		t = ts.get();
+		if (t.kind != ')')
+			error("')' expected");
+		return pow(base, exponent);
 	}
 	case name:
 	{
