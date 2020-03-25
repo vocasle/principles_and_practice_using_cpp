@@ -119,7 +119,7 @@ Token Token_stream::get()
 			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) 
 				s += ch;
 			cin.unget();
-			if (s == "quit") 
+			if (s == "exit") 
 				return Token(quit);
 			if (s == "sqrt")
 				return Token(square_root);
