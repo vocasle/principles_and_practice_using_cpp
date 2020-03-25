@@ -8,10 +8,16 @@
 	Input from cin; output to cout.
 	The grammar for input is:
 
-	Statement:
-		Expression
+	Calculation:
+		Statement
 		Print
 		Quit
+		Calculation Statement
+	Statement:
+		Declaration
+		Expression
+	Declaration:
+		"#" Name "=" Expression
 	Print
 		;
 	Quit
@@ -61,7 +67,7 @@ public:
 	void ignore(char);
 };
 
-const char let = 'L';
+const char let = '#';
 const char quit = 'Q';
 const char print = ';';
 const char number = '8';
@@ -86,6 +92,7 @@ Token Token_stream::get()
 	case ';':
 	case ',':
 	case '=':
+	case '#':
 		return Token(ch);
 	case '.':
 	case '0':
@@ -112,8 +119,6 @@ Token Token_stream::get()
 			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) 
 				s += ch;
 			cin.unget();
-			if (s == "let") 
-				return Token(let);
 			if (s == "quit") 
 				return Token(quit);
 			if (s == "sqrt")
