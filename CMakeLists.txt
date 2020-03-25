@@ -31,3 +31,5 @@ add_executable(p1c6pr6 part_1_the_basics/chapter_6/problem_6.cpp)
 add_executable(p1c6pr8 part_1_the_basics/chapter_6/problem_8.cpp)
 add_executable(p1c6pr9 part_1_the_basics/chapter_6/problem_9.cpp)
 add_executable(p1c6pr10 part_1_the_basics/chapter_6/problem_10.cpp)
+
+add_executable(p1c7drill part_1_the_basics/chapter_7/calculator08buggy.cpp part_1_the_basics/chapter_7/std_lib_facilities.h)
