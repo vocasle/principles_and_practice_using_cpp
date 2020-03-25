@@ -1,9 +1,38 @@
 /*
-	calculator08buggy.cpp
+	Simple calculator
 
-	Helpful comments removed.
+	Originally written by Bjarne Stroustrup
+		(bs@cs.tamu.edu) Spring 2004.
 
-	We have inserted 3 bugs that the compiler will catch and 3 that it won't.
+	This program implements a basic calculator.
+	Input from cin; output to cout.
+	The grammar for input is:
+
+	Statement:
+		Expression
+		Print
+		Quit
+	Print
+		;
+	Quit
+		q
+	Expression:
+		Term
+		Expression + Term
+		Expression - Term
+	Term:
+		Primary
+		Term * Primary
+		Term / Primary
+		Term % Primary
+	Primary:
+		Number
+		( Expression )
+		- Primary
+		+ Primary
+		sqrt( Primary )
+	Number:
+		floating-point-literal
 */
 
 #include "std_lib_facilities.h"
@@ -36,6 +65,7 @@ const char quit = 'Q';
 const char print = ';';
 const char number = '8';
 const char name = 'a';
+const char square_root = 'R';
 
 // Returns a Token from buffers if it is not empty or gets a Token from std::cin
 Token Token_stream::get()
@@ -83,6 +113,8 @@ Token Token_stream::get()
 				return Token(let);
 			if (s == "quit") 
 				return Token(quit);
+			if (s == "sqrt")
+				return Token(square_root);
 			return Token(name, s);
 		}
 		error("Bad token");
@@ -172,6 +204,13 @@ double primary()
 		return primary();
 	case number:
 		return t.value;
+	case square_root:
+	{
+		auto d = primary();
+		if (d < 0)
+			error("square root is defined for non negative numbers");
+		return sqrt(d);
+	}
 	case name:
 	{
 		auto prevToken = t;
