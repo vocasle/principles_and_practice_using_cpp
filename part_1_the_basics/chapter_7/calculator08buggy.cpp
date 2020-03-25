@@ -140,6 +140,13 @@ bool is_declared(string s)
 	return false;
 }
 
+void define_name(const string& name, double value)
+{
+	if (is_declared(name))
+		error("redeclaration of variable");
+	names.push_back(Variable(name, value));
+}
+
 // Holds stream of token.
 Token_stream ts;
 
@@ -295,6 +302,7 @@ void calculate()
 
 int main()
 {
+	define_name("k", 1000);
 	try 
 	{
 		calculate();
