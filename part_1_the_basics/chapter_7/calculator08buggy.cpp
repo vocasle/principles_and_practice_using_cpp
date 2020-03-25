@@ -116,7 +116,7 @@ Token Token_stream::get()
 		{
 			string s;
 			s += ch;
-			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) 
+			while (cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) 
 				s += ch;
 			cin.unget();
 			if (s == "exit") 
