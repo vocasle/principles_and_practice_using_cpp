@@ -18,6 +18,7 @@
 		Expression
 	Declaration:
 		"#" Name "=" Expression
+		"const" Name "=" Expression
 	Print
 		;
 	Quit
@@ -74,6 +75,7 @@ const char number = '8';
 const char name = 'a';
 const char square_root = 'R';
 const char power = 'P';
+const char constant = 'C';
 
 // Returns a Token from buffers if it is not empty or gets a Token from std::cin
 Token Token_stream::get()
@@ -125,6 +127,8 @@ Token Token_stream::get()
 				return Token(square_root);
 			if (s == "pow")
 				return Token(power);
+			if (s == "const")
+				return Token(constant);
 			return Token(name, s);
 		}
 		error("Bad token");
@@ -149,7 +153,9 @@ struct Variable
 {
 	string name;
 	double value;
-	Variable(string n, double v) :name(n), value(v) { }
+	bool isConst;
+	Variable(string n, double v) :name(n), value(v), isConst(false) { }
+	Variable(string n, double v, bool isConst) :name(n), value(v), isConst(isConst) { }
 };
 
 // Holds declared variables
@@ -167,7 +173,10 @@ double get_value(string s)
 void set_value(string s, double d)
 {
 	for (int i = 0; i <= names.size(); ++i)
-		if (names[i].name == s) {
+		if (names[i].name == s) 
+		{
+			if (names[i].isConst)
+				error("value of constant cannot be changed");
 			names[i].value = d;
 			return;
 		}
@@ -309,7 +318,7 @@ double expression()
 	}
 }
 // Handles declaration of new variables
-double declaration()
+double declaration(bool isConst = false)
 {
 	Token t = ts.get();
 	if (t.kind != 'a') error("name expected in declaration");
@@ -318,7 +327,7 @@ double declaration()
 	Token t2 = ts.get();
 	if (t2.kind != '=') error("= missing in declaration of ", name);
 	double d = expression();
-	names.push_back(Variable(name, d));
+	names.push_back(Variable(name, d, isConst));
 	return d;
 }
 // Handles declarations of new variables and expressions
@@ -329,6 +338,8 @@ double statement()
 	{
 	case let:
 		return declaration();
+	case constant:
+		return declaration(true);
 	default:
 		ts.unget(t);
 		return expression();
