@@ -45,6 +45,15 @@
 
 #include "std_lib_facilities.h"
 
+struct Variable
+{
+	string name;
+	double value;
+	bool is_const;
+	Variable(string n, double v) :name(n), value(v), is_const(false) { }
+	Variable(string n, double v, bool is_const) :name(n), value(v), is_const(is_const) { }
+};
+
 struct Token
 {
 	char kind;
@@ -66,6 +75,17 @@ public:
 	void unget(Token t) { buffer = t; full = true; }
 
 	void ignore(char);
+};
+
+class Symbol_table
+{
+public:
+	double get_value(const string& name);
+	void set_value(const string& name, double value);
+	bool is_declared(const string& name);
+	void define_name(const string& name, double value, bool is_const);
+private:
+	vector<Variable> var_table{};
 };
 
 const char let = '#';
@@ -149,57 +169,49 @@ void Token_stream::ignore(char c)
 		if (ch == c) return;
 }
 
-struct Variable
-{
-	string name;
-	double value;
-	bool isConst;
-	Variable(string n, double v) :name(n), value(v), isConst(false) { }
-	Variable(string n, double v, bool isConst) :name(n), value(v), isConst(isConst) { }
-};
-
-// Holds declared variables
-vector<Variable> names;
-
 // Returns value of variable by it's name
-double get_value(string s)
+double Symbol_table::get_value(const string& s)
 {
-	for (int i = 0; i < names.size(); ++i)
-		if (names[i].name == s) return names[i].value;
+	for (auto&& var : var_table)
+		if (var.name == s) 
+			return var.value;
 	error("get: undefined name ", s);
 }
 
 // Updates values of variable
-void set_value(string s, double d)
+void Symbol_table::set_value(const string& s, double d)
 {
-	for (int i = 0; i <= names.size(); ++i)
-		if (names[i].name == s) 
+	for (auto&& var : var_table)
+		if (var.name == s) 
 		{
-			if (names[i].isConst)
+			if (var.is_const)
 				error("value of constant cannot be changed");
-			names[i].value = d;
+			var.value = d;
 			return;
 		}
 	error("set: undefined name ", s);
 }
 
 // Checks whether variable with name s is declared
-bool is_declared(string s)
+bool Symbol_table::is_declared(const string& s)
 {
-	for (int i = 0; i < names.size(); ++i)
-		if (names[i].name == s) return true;
+	for (auto&& var : var_table)
+		if (var.name == s) 
+			return true;
 	return false;
 }
 
-void define_name(const string& name, double value)
+void Symbol_table::define_name(const string& name, double value, bool is_const = false)
 {
 	if (is_declared(name))
 		error("redeclaration of variable");
-	names.push_back(Variable(name, value));
+	var_table.push_back(Variable(name, value, is_const));
 }
 
 // Holds stream of token.
 Token_stream ts;
+// Holds set of variables
+Symbol_table st;
 
 double expression(); // forward declaration for usage in primary() function
 
@@ -254,10 +266,10 @@ double primary()
 		if (t.kind != '=')
 		{
 			ts.unget(t);
-			return get_value(prevToken.name);
+			return st.get_value(prevToken.name);
 		}
-		set_value(prevToken.name, expression());
-		return get_value(prevToken.name);
+		st.set_value(prevToken.name, expression());
+		return st.get_value(prevToken.name);
 	}
 	default:
 		error("primary expected");
@@ -318,16 +330,16 @@ double expression()
 	}
 }
 // Handles declaration of new variables
-double declaration(bool isConst = false)
+double declaration(bool is_const = false)
 {
 	Token t = ts.get();
 	if (t.kind != 'a') error("name expected in declaration");
 	string name = t.name;
-	if (is_declared(name)) error(name, " declared twice");
+	if (st.is_declared(name)) error(name, " declared twice");
 	Token t2 = ts.get();
 	if (t2.kind != '=') error("= missing in declaration of ", name);
 	double d = expression();
-	names.push_back(Variable(name, d, isConst));
+	st.define_name(name, d, is_const);
 	return d;
 }
 // Handles declarations of new variables and expressions
@@ -379,7 +391,7 @@ void calculate()
 
 int main()
 {
-	define_name("k", 1000);
+	st.define_name("k", 1000);
 	try 
 	{
 		calculate();
