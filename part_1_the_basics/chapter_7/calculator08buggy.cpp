@@ -10,6 +10,7 @@
 
 	Calculation:
 		Statement
+		Help
 		Print
 		Quit
 		Calculation Statement
@@ -19,6 +20,9 @@
 	Declaration:
 		"#" Name "=" Expression
 		"const" Name "=" Expression
+	Help
+		"h"
+		"H"
 	Print
 		;
 	Quit
@@ -96,6 +100,7 @@ const char name = 'a';
 const char square_root = 'R';
 const char power = 'P';
 const char constant = 'C';
+const char help = 'H';
 
 // Returns a Token from buffers if it is not empty or gets a Token from std::cin
 Token Token_stream::get()
@@ -117,6 +122,9 @@ Token Token_stream::get()
 	case '=':
 	case '#':
 		return Token(ch);
+	case 'h':
+	case 'H':
+		return Token(help);
 	case '.':
 	case '0':
 	case '1':
@@ -165,7 +173,7 @@ Token Token_stream::get()
 // Skips characters in Token_stream until c
 void Token_stream::ignore(char c)
 {
-	if (full && c == buffer.kind) 
+	if (full && c == buffer.kind)
 	{
 		full = false;
 		return;
@@ -229,7 +237,7 @@ double expression(); // forward declaration for usage in primary() function
 double primary()
 {
 	Token t = ts.get();
-	switch (t.kind) 
+	switch (t.kind)
 	{
 	case '(':
 	{
@@ -372,6 +380,8 @@ void clean_up_mess()
 	ts.ignore(print);
 }
 
+void print_help();
+
 const string prompt = "> ";
 const string result = "= ";
 // Calculation loop. It allows to calculate several expression on one line
@@ -387,6 +397,11 @@ void calculate()
 				t = ts.get();
 			if (t.kind == quit)
 				return;
+			if (t.kind == help)
+			{
+				print_help();
+				calculate();
+			}
 			ts.unget(t);
 			cout << result << statement() << endl;
 		}
@@ -420,4 +435,27 @@ int main()
 		while (cin >> c && c != ';');
 		return 2;
 	}
+}
+
+void print_help()
+{
+	cout << "Enter an expression and press 'enter' to get a result, e.g.\n"
+		<< "> 2 + 5 * (3 * 2) / 10.5 * 3.14 % 3\n"
+		<< "= 4.97143\n\n"
+		<< "Supported operations are: '+', '-', '*', '/', '%'\n\n"
+		<< "'%' returns remainder from division, e.g. 5 % 2 = 1\n\n"
+		<< "Calculator supports real numbers and integers. You can input real numbers in\n"
+		<< "scientific notation, e.g. 1e6, 1e-6\n\n"
+		<< "It is possible to define constants to use them later.\n"
+		<< "Example of definition:\n"
+		<< "> const pi = 3.14\n"
+		<< "To use defined constant later - type it's name in expression.\n"
+		<< "You can calculate area of circle with radius equal to 5.3 using defined constant 'pi':\n"
+		<< "> pi * 5.3 * 5.3\n\n"
+		<< "It is possible to define variables to use them later.\n"
+		<< "Example of definition:\n"
+		<< "# radius = 5.3\n"
+		<< "To calculate area of circle you with radius equal 5.3:\n"
+		<< "> # area = pi * radius * radius\n\n"
+		<< endl;
 }
