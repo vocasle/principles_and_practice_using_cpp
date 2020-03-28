@@ -192,7 +192,7 @@ void Token_stream::ignore(char c)
 	while (true)
 	{
 		ch = cin.get();
-		if (ch == c || ch == '\n') 
+		if (ch == c || ch == '\n')
 			return;
 	}
 }
@@ -242,6 +242,8 @@ Token_stream ts;
 Symbol_table st;
 
 double expression(); // forward declaration for usage in primary() function
+bool is_out_of_int32_range(double d);
+string compose_owerflow_err_msg(double d);
 
 // Handles '(' Expression ')'
 // - Primary
@@ -263,7 +265,13 @@ double primary()
 	case '+':
 		return primary();
 	case number:
+	{
+		if (is_out_of_int32_range(t.value))
+			error(compose_owerflow_err_msg(t.value));
+		else if (static_cast<int32_t>(t.value) != t.value)
+			error("calculator can handle only integer input");
 		return t.value;
+	}
 	case square_root:
 	{
 		auto d = expression();
@@ -364,11 +372,14 @@ double expression()
 double declaration(bool is_const = false)
 {
 	Token t = ts.get();
-	if (t.kind != 'a') error("name expected in declaration");
+	if (t.kind != name)
+		error("name expected in declaration");
 	string name = t.name;
-	if (st.is_declared(name)) error(name, " declared twice");
+	if (st.is_declared(name))
+		error(name, " declared twice");
 	Token t2 = ts.get();
-	if (t2.kind != '=') error("= missing in declaration of ", name);
+	if (t2.kind != '=')
+		error("= missing in declaration of ", name);
 	double d = expression();
 	st.define_name(name, d, is_const);
 	return d;
@@ -377,16 +388,24 @@ double declaration(bool is_const = false)
 double statement()
 {
 	Token t = ts.get();
+	double result = 0;
 	switch (t.kind)
 	{
 	case let:
-		return declaration();
+		result = declaration();
+		break;
 	case constant:
-		return declaration(true);
+		result = declaration(true);
+		break;
 	default:
 		ts.unget(t);
-		return expression();
+		result = expression();
 	}
+
+	if (is_out_of_int32_range(result))
+		error(compose_owerflow_err_msg(result));
+	else
+		return result;
 }
 // Restores the program state after encountering an error input
 void clean_up_mess()
@@ -476,4 +495,22 @@ void print_help()
 		<< "> # area = pi * radius * radius\n"
 		<< "= 88.2026\n\n"
 		<< endl;
+}
+
+bool is_out_of_int32_range(double d)
+{
+	return d < INT32_MIN || d > INT32_MAX;
+}
+
+string compose_owerflow_err_msg(double d)
+{
+	stringstream ss;
+	ss << "integer "
+		<< (d > INT32_MAX ? "owerflow" : "underflow")
+		<< ". Calculator can work with integers in range ["
+		<< INT32_MIN
+		<< ", "
+		<< INT32_MAX
+		<< ']';
+	return ss.str();
 }
