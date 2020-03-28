@@ -64,7 +64,7 @@ struct Token
 	Token(char ch, string n) : kind(ch), name(n), value(0) { }
 };
 
-class Token_stream 
+class Token_stream
 {
 	bool full;
 	Token buffer;
@@ -102,8 +102,9 @@ Token Token_stream::get()
 {
 	if (full) { full = false; return buffer; }
 	char ch;
-	cin >> ch;
-	switch (ch) {
+	ch = cin.get();
+	switch (ch)
+	{
 	case '(':
 	case ')':
 	case '+':
@@ -127,7 +128,7 @@ Token Token_stream::get()
 	case '7':
 	case '8':
 	case '9':
-	{	
+	{
 		cin.unget(); // put back character to read full double later
 		double val;
 		cin >> val;
@@ -138,10 +139,10 @@ Token Token_stream::get()
 		{
 			string s;
 			s += ch;
-			while (cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) 
+			while (cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_'))
 				s += ch;
 			cin.unget();
-			if (s == "exit") 
+			if (s == "exit")
 				return Token(quit);
 			if (s == "sqrt")
 				return Token(square_root);
@@ -151,6 +152,12 @@ Token Token_stream::get()
 				return Token(constant);
 			return Token(name, s);
 		}
+		else if (isspace(ch))
+		{
+			if (ch == '\n')
+				return Token(print);
+			return get();
+		}
 		error("Bad token");
 	}
 }
@@ -158,7 +165,8 @@ Token Token_stream::get()
 // Skips characters in Token_stream until c
 void Token_stream::ignore(char c)
 {
-	if (full && c == buffer.kind) {
+	if (full && c == buffer.kind) 
+	{
 		full = false;
 		return;
 	}
@@ -173,7 +181,7 @@ void Token_stream::ignore(char c)
 double Symbol_table::get_value(const string& s)
 {
 	for (auto&& var : var_table)
-		if (var.name == s) 
+		if (var.name == s)
 			return var.value;
 	error("get: undefined name ", s);
 }
@@ -182,7 +190,7 @@ double Symbol_table::get_value(const string& s)
 void Symbol_table::set_value(const string& s, double d)
 {
 	for (auto&& var : var_table)
-		if (var.name == s) 
+		if (var.name == s)
 		{
 			if (var.is_const)
 				error("value of constant cannot be changed");
@@ -196,7 +204,7 @@ void Symbol_table::set_value(const string& s, double d)
 bool Symbol_table::is_declared(const string& s)
 {
 	for (auto&& var : var_table)
-		if (var.name == s) 
+		if (var.name == s)
 			return true;
 	return false;
 }
@@ -221,9 +229,10 @@ double expression(); // forward declaration for usage in primary() function
 double primary()
 {
 	Token t = ts.get();
-	switch (t.kind) {
+	switch (t.kind) 
+	{
 	case '(':
-	{	
+	{
 		double d = expression();
 		t = ts.get();
 		if (t.kind != ')') error("'(' expected");
@@ -249,7 +258,7 @@ double primary()
 			error("'(' expected after pow");
 		double base = expression();
 		t = ts.get();
-		if (t.kind != ',') 
+		if (t.kind != ',')
 			error("',' expected");
 		auto exponent = expression();
 		if (static_cast<int32_t>(exponent) != exponent)
@@ -280,7 +289,7 @@ double primary()
 double term()
 {
 	double left = primary();
-	while (true) 
+	while (true)
 	{
 		Token t = ts.get();
 		switch (t.kind)
@@ -289,7 +298,7 @@ double term()
 			left *= primary();
 			break;
 		case '/':
-		{	
+		{
 			double d = primary();
 			if (d == 0) error("divide by zero");
 			left /= d;
@@ -376,7 +385,7 @@ void calculate()
 			Token t = ts.get();
 			while (t.kind == print)
 				t = ts.get();
-			if (t.kind == quit) 
+			if (t.kind == quit)
 				return;
 			ts.unget(t);
 			cout << result << statement() << endl;
@@ -392,7 +401,7 @@ void calculate()
 int main()
 {
 	st.define_name("k", 1000);
-	try 
+	try
 	{
 		calculate();
 		return 0;
