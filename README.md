@@ -8,5 +8,6 @@ This repository contains my implementation of solutions for problems listed in t
    - [X] Chapter 4
    - [X] Chapter 5
    - [X] Chapter 6
-   - [ ] Chapter 7
+   - [X] Chapter 7
+   - [ ] Chapter 8
    
