@@ -122,9 +122,6 @@ Token Token_stream::get()
 	case '=':
 	case '#':
 		return Token(ch);
-	case 'h':
-	case 'H':
-		return Token(help);
 	case '.':
 	case '0':
 	case '1':
@@ -158,6 +155,8 @@ Token Token_stream::get()
 				return Token(power);
 			if (s == "const")
 				return Token(constant);
+			if (s == "help")
+				return Token(help);
 			return Token(name, s);
 		}
 		else if (isspace(ch))
@@ -395,15 +394,17 @@ void calculate()
 			Token t = ts.get();
 			while (t.kind == print)
 				t = ts.get();
-			if (t.kind == quit)
-				return;
-			if (t.kind == help)
+			switch (t.kind)
 			{
+			case help:
 				print_help();
-				calculate();
+				break;
+			case quit:
+				return;
+			default:
+				ts.unget(t);
+				cout << result << statement() << endl;
 			}
-			ts.unget(t);
-			cout << result << statement() << endl;
 		}
 		catch (runtime_error& e)
 		{
@@ -451,11 +452,13 @@ void print_help()
 		<< "> const pi = 3.14\n"
 		<< "To use defined constant later - type it's name in expression.\n"
 		<< "You can calculate area of circle with radius equal to 5.3 using defined constant 'pi':\n"
-		<< "> pi * 5.3 * 5.3\n\n"
+		<< "> pi * 5.3 * 5.3\n"
+		<< "= 88.2026\n\n"
 		<< "It is possible to define variables to use them later.\n"
 		<< "Example of definition:\n"
 		<< "# radius = 5.3\n"
 		<< "To calculate area of circle you with radius equal 5.3:\n"
-		<< "> # area = pi * radius * radius\n\n"
+		<< "> # area = pi * radius * radius\n"
+		<< "= 88.2026\n\n"
 		<< endl;
 }
