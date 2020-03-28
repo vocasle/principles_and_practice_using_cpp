@@ -4,6 +4,11 @@
 	Originally written by Bjarne Stroustrup
 		(bs@cs.tamu.edu) Spring 2004.
 
+	Possible extensions:
+		1. Add logarithmic functions
+		2. Add factorial function
+		3. Add trigonometric functions
+
 	This program implements a basic calculator.
 	Input from cin; output to cout.
 	The grammar for input is:
@@ -43,6 +48,7 @@
 		+ Primary
 		sqrt( Expression )
 		pow( Expression, Expression )
+		ln( Expression )
 	Number:
 		floating-point-literal
 */
@@ -101,6 +107,7 @@ const char square_root = 'R';
 const char power = 'P';
 const char constant = 'C';
 const char help = 'H';
+const char natural_log = 'N';
 
 // Returns a Token from buffers if it is not empty or gets a Token from std::cin
 Token Token_stream::get()
@@ -157,6 +164,8 @@ Token Token_stream::get()
 				return Token(constant);
 			if (s == "help")
 				return Token(help);
+			if (s == "ln")
+				return Token(natural_log);
 			return Token(name, s);
 		}
 		else if (isspace(ch))
@@ -180,8 +189,12 @@ void Token_stream::ignore(char c)
 	full = false;
 
 	char ch;
-	while (cin >> ch)
-		if (ch == c) return;
+	while (true)
+	{
+		ch = cin.get();
+		if (ch == c || ch == '\n') 
+			return;
+	}
 }
 
 // Returns value of variable by it's name
@@ -287,6 +300,8 @@ double primary()
 		st.set_value(prevToken.name, expression());
 		return st.get_value(prevToken.name);
 	}
+	case natural_log:
+		return log(primary());
 	default:
 		error("primary expected");
 	}
