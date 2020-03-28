@@ -9,6 +9,9 @@
 #include <vector>
 #include <stdexcept>
 
+std::vector<std::string> spelledDigits{ "zero", "one", "two", "three", "four", "five",
+											"six", "seven", "eight", "nine", "dot" };
+
 bool isNumber(const std::string& s)
 {
 	bool isNumber = true;
@@ -38,8 +41,7 @@ std::vector<std::string> splitString(const std::string& input)
 	return result;
 }
 
-std::string convertNumberToString(const std::string& input,
-	const std::vector<std::string>& spelledDigits)
+std::string convertNumberToString(const std::string& input)
 {
 	std::string result{};
 	constexpr auto dotPosition = 10;
@@ -56,8 +58,7 @@ std::string convertNumberToString(const std::string& input,
 	return result;
 }
 
-std::string convertStringToNumbers(const std::string& input,
-	const std::vector<std::string>& spelledDigits)
+std::string convertStringToNumbers(const std::string& input)
 {
 	std::string result{};
 	for (auto&& s : splitString(input))

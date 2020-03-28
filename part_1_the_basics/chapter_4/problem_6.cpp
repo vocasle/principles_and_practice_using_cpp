@@ -9,18 +9,26 @@
 
 #include "problem_6.h"
 
+std::string convertInput(const std::string& input)
+{
+	if (isNumber(input))
+		return convertNumberToString(input);
+	else
+		return convertStringToNumbers(input);
+}
+
+void prompt(std::string& input)
+{
+	std::cout << "Enter a number or string that represents a numbers and press enter.\n"
+		<< "E.g. 4583 or four five eight three:\n";
+	std::getline(std::cin, input);
+}
+
 int main()
 {
-	std::vector<std::string> spelledDigits{ "zero", "one", "two", "three", "four", "five",
-											"six", "seven", "eight", "nine", "dot" };
-	std::cout << "Enter a number or string that represents a numbers and press enter.\n"
-			  << "E.g. 4583 or four five eight three:\n";
-	auto input = std::string();
-	std::getline(std::cin, input);
-	if (isNumber(input))
-		std::cout << convertNumberToString(input, spelledDigits) << std::endl;
-	else
-		std::cout << convertStringToNumbers(input, spelledDigits) << std::endl;
+	std::string input{};
+	prompt(input);
+	std::cout << convertInput(input) << std::endl;
 	return 0;
 }
 
