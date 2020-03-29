@@ -499,7 +499,7 @@ void print_help()
 
 bool is_out_of_int32_range(double d)
 {
-	return d < (double)INT32_MIN || d > (double)INT32_MAX;
+	return d < INT32_MIN || d > INT32_MAX;
 }
 
 string compose_owerflow_err_msg(double d)
