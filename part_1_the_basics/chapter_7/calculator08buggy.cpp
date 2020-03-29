@@ -4,6 +4,8 @@
 	Originally written by Bjarne Stroustrup
 		(bs@cs.tamu.edu) Spring 2004.
 
+	Updated 3.29.2020 to conform to exercise 1 of chapter 8.
+
 	Possible extensions:
 		1. Add logarithmic functions
 		2. Add factorial function
