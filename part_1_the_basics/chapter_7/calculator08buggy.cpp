@@ -78,8 +78,9 @@ class Token_stream
 {
 	bool full;
 	Token buffer;
+	istream& is;
 public:
-	Token_stream() :full(0), buffer(0) { }
+	Token_stream(istream& is) :full(0), buffer(0), is(is) { }
 
 	Token get();
 	void unget(Token t) { buffer = t; full = true; }
@@ -114,7 +115,7 @@ Token Token_stream::get()
 {
 	if (full) { full = false; return buffer; }
 	char ch;
-	ch = cin.get();
+	ch = is.get();
 	switch (ch)
 	{
 	case '(':
@@ -143,7 +144,7 @@ Token Token_stream::get()
 	{
 		cin.unget(); // put back character to read full double later
 		double val;
-		cin >> val;
+		is >> val;
 		return Token(number, val);
 	}
 	default:
@@ -151,7 +152,7 @@ Token Token_stream::get()
 		{
 			string s;
 			s += ch;
-			while (cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_'))
+			while (is.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_'))
 				s += ch;
 			cin.unget();
 			if (s == "exit")
@@ -191,7 +192,7 @@ void Token_stream::ignore(char c)
 	char ch;
 	while (true)
 	{
-		ch = cin.get();
+		ch = is.get();
 		if (ch == c || ch == '\n')
 			return;
 	}
@@ -237,7 +238,7 @@ void Symbol_table::define_name(const string& name, double value, bool is_const =
 }
 
 // Holds stream of token.
-Token_stream ts;
+auto ts = Token_stream(cin);
 // Holds set of variables
 Symbol_table st;
 
