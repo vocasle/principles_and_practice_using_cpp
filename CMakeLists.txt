@@ -1,35 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
-project(principles_and_practice_using_cpp)
+project(principles_and_practice_using_cpp 
+	VERSION 1.0
+	DESCRIPTION "This project contains my implementation of problems from Programming Principles and Practice using C++"
+	LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(p1c4drill part_1_the_basics/chapter_4/drill.cpp)
-add_executable(p1c4pr2 part_1_the_basics/chapter_4/problem_2.cpp)
-add_executable(p1c4pr3 part_1_the_basics/chapter_4/problem_3.cpp)
-add_executable(p1c4pr4 part_1_the_basics/chapter_4/problem_4.cpp)
-add_executable(p1c4pr5 part_1_the_basics/chapter_4/problem_5.cpp)
-add_executable(p1c4pr6 part_1_the_basics/chapter_4/problem_6.cpp part_1_the_basics/chapter_4/problem_6.h)
-add_executable(p1c4pr7 part_1_the_basics/chapter_4/problem_7.cpp)
-add_executable(p1c4pr8 part_1_the_basics/chapter_4/problem_8.cpp)
-add_executable(p1c4pr10 part_1_the_basics/chapter_4/problem_10.cpp)
-add_executable(p1c4pr11 part_1_the_basics/chapter_4/problem_11.cpp)
-add_executable(p1c4pr13 part_1_the_basics/chapter_4/problem_13.cpp)
-add_executable(p1c4pr16 part_1_the_basics/chapter_4/problem_16.cpp part_1_the_basics/chapter_4/problem_16.h)
-add_executable(p1c4pr17 part_1_the_basics/chapter_4/problem_17.cpp)
-add_executable(p1c4pr18 part_1_the_basics/chapter_4/problem_18.cpp)
-add_executable(p1c4pr19 part_1_the_basics/chapter_4/problem_19.cpp)
-
-add_executable(p1c5pr2 part_1_the_basics/chapter_5/problem_2.cpp)
-add_executable(p1c5pr8 part_1_the_basics/chapter_5/problem_8.cpp)
-add_executable(p1c5pr11 part_1_the_basics/chapter_5/problem_11.cpp)
-add_executable(p1c5pr12 part_1_the_basics/chapter_5/problem_12.cpp)
-add_executable(p1c5pr15 part_1_the_basics/chapter_5/problem_15.cpp)
-
-add_executable(p1c6pr1 part_1_the_basics/chapter_6/calculator02buggy.cpp)
-add_executable(p1c6pr4 part_1_the_basics/chapter_6/problem_4.cpp)
-add_executable(p1c6pr6 part_1_the_basics/chapter_6/problem_6.cpp)
-add_executable(p1c6pr8 part_1_the_basics/chapter_6/problem_8.cpp)
-add_executable(p1c6pr9 part_1_the_basics/chapter_6/problem_9.cpp)
-add_executable(p1c6pr10 part_1_the_basics/chapter_6/problem_10.cpp)
-
-add_executable(p1c7drill part_1_the_basics/chapter_7/calculator08buggy.cpp part_1_the_basics/chapter_7/std_lib_facilities.h)
+add_subdirectory(part_1_the_basics)

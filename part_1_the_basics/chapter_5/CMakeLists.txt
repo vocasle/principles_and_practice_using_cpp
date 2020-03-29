@@ -1,0 +1,5 @@
+add_executable(p1c5pr2 problem_2.cpp)
+add_executable(p1c5pr8 problem_8.cpp)
+add_executable(p1c5pr11 problem_11.cpp)
+add_executable(p1c5pr12 problem_12.cpp)
+add_executable(p1c5pr15 problem_15.cpp)

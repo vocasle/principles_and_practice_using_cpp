@@ -1,0 +1,6 @@
+add_executable(p1c6pr1 calculator02buggy.cpp)
+add_executable(p1c6pr4 problem_4.cpp)
+add_executable(p1c6pr6 problem_6.cpp)
+add_executable(p1c6pr8 problem_8.cpp)
+add_executable(p1c6pr9 problem_9.cpp)
+add_executable(p1c6pr10 problem_10.cpp)
