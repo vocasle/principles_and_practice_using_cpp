@@ -1,15 +1,17 @@
 #include <vector>
 #include <algorithm>
 
-std::vector<int32_t> reverse(const std::vector<int32_t>& v)
+template <typename T>
+std::vector<T> reverse(const std::vector<T>& v)
 {
-	std::vector<int32_t> reversed;
+	std::vector<T> reversed;
 	for (auto it = v.rbegin(); it != v.rend(); ++it)
 		reversed.push_back(*it);
 	return reversed;
 }
 
-void reverse(std::vector<int32_t>& v)
+template <typename T>
+void reverse(std::vector<T>& v)
 {
 	std::reverse(v.begin(), v.end());
 }
