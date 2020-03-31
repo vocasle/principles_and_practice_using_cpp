@@ -1,11 +1,4 @@
-#include <vector>
-#include <string>
-#include <stdexcept>
-
-void error(const std::string& msg)
-{
-	throw std::runtime_error(msg);
-}
+#include "chapter_8.h"
 
 void fibonacci(int32_t first, int32_t second, std::vector<int32_t>& numbers, int32_t numOfElements)
 {

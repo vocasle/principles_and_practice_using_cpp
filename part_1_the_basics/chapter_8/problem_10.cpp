@@ -1,6 +1,5 @@
 // This file contains solution for problem 10 of chapter 8
 
-#include <vector>
 #include <iostream>
 #include "problem_10.h"
 
@@ -14,10 +13,18 @@ int main()
 		'A', 'b', '$', '%', 'C', 's'
 	};
 
-	auto maxd = maxv(dv);
-	auto maxc = maxv(cv);
+	try
+	{
+		auto maxd = maxv(dv);
+		auto maxc = maxv(cv);
+	
+		std::cout << "Max double: " << maxd
+			<< "\nMax char: " << maxc << '\n';
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 
-	std::cout << "Max double: " << maxd
-		<< "\nMax char: " << maxc << '\n';
 	return 0;
 }

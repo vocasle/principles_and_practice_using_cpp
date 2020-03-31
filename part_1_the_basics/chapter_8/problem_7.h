@@ -1,13 +1,7 @@
-#include <vector>
-#include <string>
-#include <iostream>
+#include "chapter_8.h"
 #include <algorithm>
-#include <stdexcept>
 
-void error(const std::string& msg)
-{
-	throw std::runtime_error(msg);
-}
+
 
 std::vector<std::string> get_names(std::istream& is)
 {

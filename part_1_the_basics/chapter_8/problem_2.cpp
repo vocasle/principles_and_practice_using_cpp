@@ -1,5 +1,5 @@
 // This file contains solutions for problem 2-3 of chapter 8
-#include "problem_2.h"
+#include "chapter_8.h"
 
 int main()
 {
