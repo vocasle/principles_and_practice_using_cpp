@@ -1,7 +1,6 @@
 // This file contains solutions for exercise 7 of chapter 8
 
 #include "problem_7.h"
-#include "problem_2.h"
 
 int main()
 {

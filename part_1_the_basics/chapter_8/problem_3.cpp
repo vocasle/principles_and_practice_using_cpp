@@ -1,4 +1,3 @@
-#include "problem_2.h"
 #include "problem_3.h"
 
 int main()

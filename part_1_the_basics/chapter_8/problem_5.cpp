@@ -1,6 +1,5 @@
 // This file contains solution for exercise 5 of chapter 8
 
-#include "problem_2.h"
 #include "problem_3.h"
 #include "problem_5.h"
 
