@@ -9,5 +9,5 @@ This repository contains my implementation of solutions for problems listed in t
    - [X] Chapter 5
    - [X] Chapter 6
    - [X] Chapter 7
-   - [ ] Chapter 8
-   
+   - [X] Chapter 8
+   - [ ] Chapter 9
