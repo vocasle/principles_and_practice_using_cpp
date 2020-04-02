@@ -12,6 +12,7 @@ class Date {
 	int y; // year
 	Month m;
 	int d; // day
+	void increment_day();
 public:
 	Date(int y, Month m, int d); // check for valid date and initialize
 	void add_day(int n); // increase the Date by n days
@@ -20,7 +21,10 @@ public:
 	int year() { return y; }
 };
 
-Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d } { }
+void error(const std::string& msg)
+{
+	throw std::runtime_error(msg);
+}
 
 std::ostream& operator<<(std::ostream& os, Date& d)
 {
@@ -29,18 +33,40 @@ std::ostream& operator<<(std::ostream& os, Date& d)
 		<< ',' << d.day() << ')';
 }
 
+bool is_valid(Date& d);
+
+Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d } 
+{
+	if (!is_valid(*this))
+	{
+		std::stringstream ss;
+		ss << *this;
+		error(ss.str() + " is not a valid date");
+	}
+}
+
 bool is_leap(Date& d)
 {
 	return (d.year() % 4 == 0) && ((d.year() % 100 != 0) || (d.year() % 400 == 0));
+}
+
+bool is_30_day_month(Month m)
+{
+	return m == Month::apr || m == Month::jun || m == Month::sep || m == Month::nov;
+}
+
+bool is_31_day_month(Month m)
+{
+	return m != Month::feb && !is_30_day_month(m);
 }
 
 bool is_valid(Date& d)
 {
 	bool is_valid = d.year() > 0 && (int(d.month()) > 0 && int(d.month()) < 13) && d.day() > 0;
 	is_valid = is_valid && (
-		((int(d.month()) == 1 || int(d.month()) == 3 || int(d.month()) == 5 || int(d.month()) == 7 || int(d.month()) == 8 || int(d.month()) == 10 || int(d.month()) == 12) && d.day() < 32) ||
-		((int(d.month()) == 4 || int(d.month()) == 6 || int(d.month()) == 9 || int(d.month()) == 11) && d.day() < 31) ||
-		(int(d.month()) == 2 && (is_leap(d) && d.day() < 30) || d.day() < 29)
+		(is_31_day_month(d.month()) && d.day() < 32) ||
+		(is_30_day_month(d.month()) && d.day() < 31) ||
+		(d.month() == Month::feb && (is_leap(d) && d.day() < 30) || d.day() < 29)
 		);
 	return is_valid;
 }
@@ -50,15 +76,8 @@ int next_val(int threshold, int val)
 	return val != threshold ? val + 1 : 1;
 }
 
-void Date::add_day(int n)
+void Date::increment_day()
 {
-	if (!is_valid(*this))
-	{
-		std::stringstream ss;
-		ss << *this;
-		throw std::runtime_error(ss.str() + " is not a valid date");
-	}
-
 	switch (m)
 	{
 	case Month::feb:
@@ -91,14 +110,21 @@ void Date::add_day(int n)
 	}
 }
 
+void Date::add_day(int n)
+{
+	if (n <= 0)
+		error("add_day() - negative argument passed");
+	for (int i = 0; i < n; ++i)
+		increment_day();
+}
+
 int main()
 {
-	Date today{ 1978, Month::jun, 26 };
-	Date tomorrow = today;
-
 	try
 	{
-		tomorrow.add_day(1);
+		Date today{ 1978, Month::jun, 26 };
+		Date tomorrow = today;
+		tomorrow.add_day(10);
 		std::cout << today
 			<< '\n' << tomorrow << std::endl;
 	}
