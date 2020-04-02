@@ -1,0 +1,9 @@
+Plausible operations for a car
+
+to slow down
+to speed up
+to turn left
+to turn right
+to switch on light indicators
+to brake
+to switch on windscreen wiper
