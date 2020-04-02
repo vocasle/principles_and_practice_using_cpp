@@ -38,12 +38,6 @@ void Name_pairs::read_ages()
 	}
 }
 
-void Name_pairs::print()
-{
-	for (size_t i = 0; i < name.size(); ++i)
-		std::cout << name.at(i) << ", " << age.at(i) << '\n';
-}
-
 void Name_pairs::sort()
 {
 	auto name_orig{ name };
@@ -53,6 +47,7 @@ void Name_pairs::sort()
 	for (size_t i = 0; i < name.size(); ++i)
 	{
 		auto pos = std::find(name_orig.begin(), name_orig.end(), name.at(i)) - name_orig.begin();
+		// handle duplicate names
 		while (std::find(processed_indexes.begin(), processed_indexes.end(), pos) != processed_indexes.end())
 			pos = std::find(name_orig.begin() + pos + 1, name_orig.end(), name.at(i)) - name_orig.begin();
 		sorted_age[i] = age.at(pos);
@@ -73,4 +68,26 @@ std::string trim(const std::string& s)
 void error(const std::string& msg)
 {
 	throw std::runtime_error(msg);
+}
+
+std::ostream& operator<<(std::ostream& os, const Name_pairs& np)
+{
+	for (size_t i = 0; i < np.get_name().size(); ++i)
+		os << np.get_name().at(i) << ", " << np.get_age().at(i) << '\n';
+	return os;
+}
+
+bool operator==(const Name_pairs& lhs, const Name_pairs& rhs)
+{
+	auto equals = true;
+	equals = equals && lhs.get_age().size() == rhs.get_age().size();
+	for (size_t i = 0; i < lhs.get_name().size(); ++i)
+		equals = equals && lhs.get_age().at(i) == rhs.get_age().at(i)
+						&& lhs.get_name().at(i) == rhs.get_name().at(i);
+	return equals;
+}
+
+bool operator!=(const Name_pairs& lhs, const Name_pairs& rhs)
+{
+	return !(lhs == rhs);
 }
