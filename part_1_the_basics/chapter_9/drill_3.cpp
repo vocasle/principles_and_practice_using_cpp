@@ -6,6 +6,7 @@
 
 class Date {
 	int y, m, d; // year, month, day
+	void increment_day();
 public:
 	Date(int y, int m, int d); // check for valid date and initialize
 	void add_day(int n); // increase the Date by n days
@@ -14,7 +15,19 @@ public:
 	int year() { return y; }
 };
 
-Date::Date(int y, int m, int d) : y{ y }, m{ m }, d{ d } { }
+std::ostream& operator<<(std::ostream& os, Date& d);
+bool is_valid(Date& d);
+void error(const std::string& msg);
+
+Date::Date(int y, int m, int d) : y{ y }, m{ m }, d{ d } 
+{
+	if (!is_valid(*this))
+	{
+		std::stringstream ss;
+		ss << *this;
+		error(ss.str() + " is not a valid date");
+	}
+}
 
 std::ostream& operator<<(std::ostream& os, Date& d)
 {
@@ -28,12 +41,22 @@ bool is_leap(Date& d)
 	return (d.year() % 4 == 0) && ((d.year() % 100 != 0) || (d.year() % 400 == 0));
 }
 
+bool is_30_day_month(int m)
+{
+	return m == 4 || m == 6 || m == 9 || m == 11;
+}
+
+bool is_31_day_month(int m)
+{
+	return m != 2 && !is_30_day_month(m);
+}
+
 bool is_valid(Date& d)
 {
 	bool is_valid = d.year() > 0 && (d.month() > 0 && d.month() < 13) && d.day() > 0;
 	is_valid = is_valid && (
-		((d.month() == 1 || d.month() == 3 || d.month() == 5 || d.month() == 7 || d.month() == 8 || d.month() == 10 || d.month() == 12) && d.day() < 32) ||
-		((d.month() == 4 || d.month() == 6 || d.month() == 9 || d.month() == 11) && d.day() < 31) ||
+		(is_31_day_month(d.month()) && d.day() < 32) ||
+		(is_30_day_month(d.month()) && d.day() < 31) ||
 		(d.month() == 2 && (is_leap(d) && d.day() < 30) || d.day() < 29)
 		);
 	return is_valid;
@@ -44,15 +67,8 @@ int next_val(int threshold, int val)
 	return val != threshold ? val + 1 : 1;
 }
 
-void Date::add_day(int n)
+void Date::increment_day()
 {
-	if (!is_valid(*this))
-	{
-		std::stringstream ss;
-		ss << *this;
-		throw std::runtime_error(ss.str() + " is not a valid date");
-	}
-
 	switch (m)
 	{
 	case 2:
@@ -85,14 +101,27 @@ void Date::add_day(int n)
 	}
 }
 
+void Date::add_day(int n)
+{
+	if (n <= 0)
+		error("add_day() - negative argument passed");
+	for (int i = 0; i < n; ++i)
+		increment_day();
+}
+
+void error(const std::string& msg)
+{
+	throw std::runtime_error(msg);
+}
+
 int main()
 {
-	Date today{ 1978, 6,26 };
-	Date tomorrow = today;
 
 	try
 	{
-		tomorrow.add_day(1);
+		Date today{ 1978, 6,26 };
+		Date tomorrow = today;
+		tomorrow.add_day(10);
 		std::cout << today
 			<< '\n' << tomorrow << std::endl;
 	}
