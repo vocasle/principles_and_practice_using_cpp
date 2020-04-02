@@ -5,3 +5,4 @@ add_executable(p1c9dr4 drill_4.cpp)
 add_executable(p1c9dr5 drill_5.cpp)
 
 add_executable(p1c9pr1 problem_1.cpp "name_pairs.cpp")
+add_executable(p1c9pr4 problem_4.cpp)
