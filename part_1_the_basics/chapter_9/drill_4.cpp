@@ -15,7 +15,7 @@ class Date {
 public:
 	Date(int y, Month m, int d); // check for valid date and initialize
 	void add_day(int n); // increase the Date by n days
-	int month() { return int(m); }
+	Month month() { return m; }
 	int day() { return d; }
 	int year() { return y; }
 };
@@ -25,7 +25,7 @@ Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d } { }
 std::ostream& operator<<(std::ostream& os, Date& d)
 {
 	return os << '(' << d.year()
-		<< ',' << d.month()
+		<< ',' << int(d.month())
 		<< ',' << d.day() << ')';
 }
 
@@ -36,11 +36,11 @@ bool is_leap(Date& d)
 
 bool is_valid(Date& d)
 {
-	bool is_valid = d.year() > 0 && (d.month() > 0 && d.month() < 13) && d.day() > 0;
+	bool is_valid = d.year() > 0 && (int(d.month()) > 0 && int(d.month()) < 13) && d.day() > 0;
 	is_valid = is_valid && (
-		((d.month() == 1 || d.month() == 3 || d.month() == 5 || d.month() == 7 || d.month() == 8 || d.month() == 10 || d.month() == 12) && d.day() < 32) ||
-		((d.month() == 4 || d.month() == 6 || d.month() == 9 || d.month() == 11) && d.day() < 31) ||
-		(d.month() == 2 && (is_leap(d) && d.day() < 30) || d.day() < 29)
+		((int(d.month()) == 1 || int(d.month()) == 3 || int(d.month()) == 5 || int(d.month()) == 7 || int(d.month()) == 8 || int(d.month()) == 10 || int(d.month()) == 12) && d.day() < 32) ||
+		((int(d.month()) == 4 || int(d.month()) == 6 || int(d.month()) == 9 || int(d.month()) == 11) && d.day() < 31) ||
+		(int(d.month()) == 2 && (is_leap(d) && d.day() < 30) || d.day() < 29)
 		);
 	return is_valid;
 }
