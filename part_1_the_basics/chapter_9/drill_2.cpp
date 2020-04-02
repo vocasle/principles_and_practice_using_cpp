@@ -13,7 +13,25 @@ struct Date
 	void add_day(int n);
 };
 
-Date::Date(int y, int m, int d): y{y}, m{m}, d{d} { }
+
+std::ostream& operator<<(std::ostream& os, const Date& d);
+bool is_valid(const Date& d);
+void error(const std::string& msg);
+
+Date::Date(int y, int m, int d): y{y}, m{m}, d{d}
+{
+	if (!is_valid(*this))
+	{
+		std::stringstream ss;
+		ss << *this;
+		error(ss.str() + " is not a valid date");
+	}
+}
+
+void error(const std::string& msg)
+{
+	throw std::runtime_error(msg);
+}
 
 std::ostream& operator<<(std::ostream& os, const Date& d)
 {
@@ -27,12 +45,22 @@ bool is_leap(const Date& d)
 	return (d.y % 4 == 0) && ((d.y % 100 != 0) || (d.y % 400 == 0));
 }
 
+bool is_30_day_month(int m)
+{
+	return m == 4 || m == 6 || m == 9 || m == 11;
+}
+
+bool is_31_day_month(int m)
+{
+	return m != 2 && !is_30_day_month(m);
+}
+
 bool is_valid(const Date& d)
 {
 	bool is_valid = d.y > 0 && (d.m > 0 && d.m < 13) && d.d > 0;
 	is_valid = is_valid && (
-		((d.m == 1 || d.m == 3 || d.m == 5 || d.m == 7 || d.m == 8 || d.m == 10 || d.m == 12) && d.d < 32) ||
-		((d.m == 4 || d.m == 6 || d.m == 9 || d.m == 11) && d.d < 31) ||
+		(is_31_day_month(d.m) && d.d < 32) ||
+		(is_30_day_month(d.m) && d.d < 31) ||
 		(d.m == 2 && (is_leap(d) && d.d < 30) || d.d < 29)
 		);
 	return is_valid;
@@ -43,23 +71,16 @@ int next_val(int threshold, int val)
 	return val != threshold ? val + 1 : 1;
 }
 
-void Date::add_day(int n)
+void increment_day(Date& d)
 {
-	if (!is_valid(*this))
-	{
-		std::stringstream ss;
-		ss << *this;
-		throw std::runtime_error(ss.str() + " is not a valid date");
-	}
-
-	switch (m)
+	switch (d.m)
 	{
 	case 2:
 	{
-		if (is_leap(*this))
-			d = next_val(29, d);
+		if (is_leap(d))
+			d.d = next_val(29, d.d);
 		else
-			d = next_val(28, d);
+			d.d = next_val(28, d.d);
 		break;
 	}
 	case 1:
@@ -69,28 +90,36 @@ void Date::add_day(int n)
 	case 8:
 	case 10:
 	case 12:
-		d = next_val(31, d);
+		d.d = next_val(31, d.d);
 		break;
 	default:
-		d = next_val(30, d);
+		d.d = next_val(30, d.d);
 	}
 
 	// handles case when next day is the first day of next month
-	if (d == 1)
+	if (d.d == 1)
 	{
-		m = next_val(12, m);
-		if (m == 1)
-			++y;
+		d.m = next_val(12, d.m);
+		if (d.m == 1)
+			++d.y;
 	}
+}
+
+void Date::add_day(int n)
+{
+	if (n <= 0)
+		error("add_day() - negative argument passed");
+	for (int i = 0; i < n; ++i)
+		increment_day(*this);
 }
 
 int main()
 {
-	Date today{ 1978, 6,26 };
-	Date tomorrow = today;
 
 	try
 	{
+		Date today{ 1978, 6,26 };
+		Date tomorrow = today;
 		tomorrow.add_day(1);
 		std::cout << today
 			<< '\n' << tomorrow << std::endl;
