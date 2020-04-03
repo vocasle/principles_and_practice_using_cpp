@@ -6,6 +6,7 @@ int main()
 	try
 	{
 		Book book{
+			Genre::fiction,
 			"2354-3423-2532-A",
 			"The Fellowship of the Ring",
 			"J. R. R. Tolkien",
@@ -14,6 +15,7 @@ int main()
 		};
 
 		Book book2{
+			Genre::fiction,
 			"0-395-31555-7",
 			"The Two Towers",
 			"J. R. R. Tolkien",

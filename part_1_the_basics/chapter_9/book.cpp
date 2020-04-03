@@ -1,17 +1,21 @@
-// This file contains Book class' definition
+// This file contains Book class' methods and helper functions definitions
+//
 // Rev 1: Solution for ex. 5 of chapter 9
 // Rev 2: Solution for ex. 6 of chapter 9
+// Rev 3: Solution for ex. 7 of chapter 9
 
 #include "book.h"
 #include <regex>
 
 Book::Book(
+	Genre genre,
 	const std::string& isbn,
 	const std::string& title,
 	const std::string& author,
 	const Date& copyright_date,
 	bool is_checked_out
-) : isbn{ isbn },
+) : genre{ genre },
+isbn{ isbn },
 title{ title },
 author{ author },
 copyright_date{ copyright_date },
