@@ -9,11 +9,11 @@
 #include <iostream>
 
 template<typename T>
-T findMode(const std::__1::vector<T>& v)
+T findMode(const std::vector<T>& v)
 {
 	T mode;
 	auto numOfRepeats = 0;
-	std::__1::map<T, int> occurrences;
+	std::map<T, int> occurrences;
 	for (auto&& el : v)
 		occurrences[el]++;
 	for (auto&& occurrence : occurrences)

@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <vector>
 #include <numeric>
+#include <ciso646>
 
 bool isValid(const std::string& s)
 {
@@ -33,9 +34,9 @@ double toMeters(double length, const std::string& unit)
 
 int main()
 {
-	double largest = INT_MIN;
+	double largest{ INT_MIN };
 	std::string largestUnit = "m";
-	double smallest = INT_MAX;
+	double smallest{ INT_MAX };
 	std::string smallestUnit = "m";
 	std::vector<double> lengths{};
 

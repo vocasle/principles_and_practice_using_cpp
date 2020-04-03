@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 double ctok(double c)
 // converts Celsius to Kelvin

@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+#include <ciso646>
 
 std::vector<int32_t> calculateFibonacci(int32_t n)
 {

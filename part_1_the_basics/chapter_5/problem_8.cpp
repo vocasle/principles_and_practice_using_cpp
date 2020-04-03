@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <regex>
+#include <ciso646>
 
 bool isDouble(const std::string& value)
 {

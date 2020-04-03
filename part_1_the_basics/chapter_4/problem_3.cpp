@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <numeric>
+#include <algorithm>
 
 int main()
 {

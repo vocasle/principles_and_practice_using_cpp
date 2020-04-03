@@ -11,6 +11,7 @@
 #include <vector>
 #include <regex>
 #include <fstream>
+#include <ciso646>
 
 void printIntro()
 {

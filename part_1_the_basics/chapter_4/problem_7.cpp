@@ -10,8 +10,6 @@
 
 int main()
 {
-	const std::vector<std::string> spelledDigits{ "zero", "one", "two", "three", "four", "five",
-												  "six", "seven", "eight", "nine", "dot" };
 	constexpr char outfile[] = "out.txt";
 	std::cout << "Enter two numbers from 0 to 9"
 			  << " (or spelled-out values) followed by operation sign.\n"
@@ -25,11 +23,11 @@ int main()
 	if (isNumber(parts.at(0)))
 		a = parts.at(0);
 	else
-		a = convertStringToNumbers(parts.at(0), spelledDigits);
+		a = convertStringToNumbers(parts.at(0));
 	if (isNumber(parts.at(1)))
 		b = parts.at(1);
 	else
-		b = convertStringToNumbers(parts.at(1), spelledDigits);
+		b = convertStringToNumbers(parts.at(1));
 	operation = parts.at(2)[0];
 	std::ofstream(outfile) << a << ' ' << b << ' ' << operation;
 	auto result = std::system(std::string("./p1c3pr5 < " + std::string(outfile)).c_str());

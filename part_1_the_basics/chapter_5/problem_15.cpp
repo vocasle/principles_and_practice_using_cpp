@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <ciso646>
 
 bool isInputValid(const std::string& input)
 {
