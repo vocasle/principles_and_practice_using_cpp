@@ -1,4 +1,6 @@
 #include "book.h"
+#include "patron.h"
+
 #include <iostream>
 
 int main()
@@ -14,17 +16,10 @@ int main()
 			false
 		};
 
-		Book book2{
-			Genre::fiction,
-			"0-395-31555-7",
-			"The Two Towers",
-			"J. R. R. Tolkien",
-			Date(1954, Month::nov, 11),
-			false
-		};
-
-		std::cout << book << std::endl;
-		std::cout << (book == book2 ? "true" : "false") << std::endl;
+		Patron patron{ "Nikita Elsakov", "12S4-52D4-2N45-A823", 0 };
+		std::cout << (owes_fees(patron) ? "owes" : "does not owe") << std::endl;
+		patron.set_fees(25);
+		std::cout << (owes_fees(patron) ? "owes" : "does not owe") << std::endl;
 	}
 	catch (const std::exception& e)
 	{
