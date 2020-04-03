@@ -1,3 +1,6 @@
+#ifndef DATE_H
+#define DATE_H
+
 #include <string>
 #include <iostream>
 
@@ -7,6 +10,7 @@ enum class Month {
 
 class Date {
 public:
+	Date(); // initialize with current date
 	Date(int y, Month m, int d); // check for valid date and initialize
 	Month month() const { return m; }
 	int day() const { return d; }
@@ -23,3 +27,6 @@ bool is_31_day_month(Month m);
 bool is_valid(const Date& d);
 void error(const std::string& msg);
 std::ostream& operator<<(std::ostream& os, const Date& d);
+const Date& default_date();
+
+#endif // !DATE_H

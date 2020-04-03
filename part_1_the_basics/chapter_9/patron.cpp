@@ -40,3 +40,8 @@ bool owes_fees(const Patron& patron)
 {
 	return !(patron.get_fees() < 0.001);
 }
+
+bool operator==(const Patron& lhs, const Patron& rhs)
+{
+	return lhs.get_card_number() == rhs.get_card_number();
+}

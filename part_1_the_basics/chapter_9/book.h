@@ -9,6 +9,10 @@
 // - Define Genre enum class
 // - Add genre member to Book class
 //
+// Rev 4: Guard with #ifndef directive
+
+#ifndef BOOK_H
+#define BOOK_H
 
 #include <string>
 #include <iostream>
@@ -24,7 +28,7 @@ class Book
 public:
 	Book(
 		Genre genre,
-		const std::string& isbn, 
+		const std::string& isbn,
 		const std::string& title,
 		const std::string& author,
 		const Date& copyright_date,
@@ -49,3 +53,5 @@ private:
 std::ostream& operator<<(std::ostream& os, const Book& book);
 bool operator==(const Book& lhs, const Book& rhs);
 bool operator!=(const Book& lhs, const Book& rhs);
+
+#endif // !BOOK_H

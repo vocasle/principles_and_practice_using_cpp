@@ -4,6 +4,9 @@
 // - Declaration of owes_fees helper function
 //
 
+#ifndef PATRON_H
+#define PATRON_H
+
 #include <string>
 
 class Patron
@@ -20,4 +23,7 @@ private:
 	double fees;
 };
 
+bool operator==(const Patron& lhs, const Patron& rhs);
 bool owes_fees(const Patron& patron);
+
+#endif // !PATRON_H

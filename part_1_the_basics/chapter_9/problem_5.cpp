@@ -1,5 +1,6 @@
 #include "book.h"
 #include "patron.h"
+#include "library.h"
 
 #include <iostream>
 
@@ -17,9 +18,10 @@ int main()
 		};
 
 		Patron patron{ "Nikita Elsakov", "12S4-52D4-2N45-A823", 0 };
-		std::cout << (owes_fees(patron) ? "owes" : "does not owe") << std::endl;
-		patron.set_fees(25);
-		std::cout << (owes_fees(patron) ? "owes" : "does not owe") << std::endl;
+		Library lib{};
+		lib.add_patron(patron);
+		lib.add_book(book);
+		std::cout << lib.checkout_book(patron, book) << std::endl;
 	}
 	catch (const std::exception& e)
 	{

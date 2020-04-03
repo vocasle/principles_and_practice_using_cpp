@@ -1,8 +1,10 @@
 #include "date.h"
 #include <stdexcept>
 #include <sstream>
+#include <ctime>
 
-Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d } {
+Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d }
+{
 	if (!is_valid(*this))
 	{
 		std::stringstream ss;
@@ -11,15 +13,20 @@ Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d } {
 	}
 }
 
+Date::Date()
+	: y{ default_date().day() },
+	m{ default_date().month() },
+	d{ default_date().day() } {}
+
 // --------------------------------------------------
 // helper functions
 // --------------------------------------------------
 
 bool is_valid(const Date& d)
 {
-	bool is_valid = d.year() > 0 && (int(d.month()) > 0 
-								&& int(d.month()) < 13) 
-								&& d.day() > 0;
+	bool is_valid = d.year() > 0 && (int(d.month()) > 0
+		&& int(d.month()) < 13)
+		&& d.day() > 0;
 	is_valid = is_valid && (
 		(is_31_day_month(d.month()) && d.day() < 32) ||
 		(is_30_day_month(d.month()) && d.day() < 31) ||
@@ -53,4 +60,13 @@ std::ostream& operator<<(std::ostream& os, const Date& d)
 	return os << '(' << d.year()
 		<< ',' << int(d.month())
 		<< ',' << d.day() << ')';
+}
+
+const Date& default_date()
+{
+	static const auto time{ std::time(nullptr) };
+	static const auto tm{ std::localtime(&time) };
+	
+	static Date dd{ tm->tm_year + 1900, Month(tm->tm_mon + 1), tm->tm_mday };
+	return dd;
 }
