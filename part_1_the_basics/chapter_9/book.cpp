@@ -1,5 +1,6 @@
 // This file contains Book class' definition
 // Rev 1: Solution for ex. 5 of chapter 9
+// Rev 2: Solution for ex. 6 of chapter 9
 
 #include "book.h"
 #include <regex>
@@ -54,4 +55,27 @@ void Book::check_in()
 void Book::check_out()
 {
 	is_chkd_out = true;
+}
+
+// ------------------------------------------------
+// helper functions
+// ------------------------------------------------
+
+std::ostream& operator<<(std::ostream& os, const Book& book)
+{
+	os << book.get_title()
+		<< '\n' << book.get_author()
+		<< '\n' << book.get_isbn()
+		<< '\n';
+	return os;
+}
+
+bool operator==(const Book& lhs, const Book& rhs)
+{
+	return lhs.get_isbn() == rhs.get_isbn();
+}
+
+bool operator!=(const Book& lhs, const Book& rhs)
+{
+	return !(lhs == rhs);
 }
