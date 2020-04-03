@@ -21,7 +21,18 @@ int main()
 		Library lib{};
 		lib.add_patron(patron);
 		lib.add_book(book);
-		std::cout << lib.checkout_book(patron, book) << std::endl;
+
+		Date today{};
+		today.add_day(1);
+		std::cout << "Today's date: "
+			<< today
+			<< "\nNext workday is: "
+			<< next_workday(today)
+			<< "\nCurrent week is: "
+			<< week_of_year(today)
+			<< "\nNext workday week will be: "
+			<< week_of_year(next_workday(today))
+			<< '\n';
 	}
 	catch (const std::exception& e)
 	{
