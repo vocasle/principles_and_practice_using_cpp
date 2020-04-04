@@ -3,115 +3,65 @@
 #include <sstream>
 #include <ctime>
 
-Date::Date(int y, Month m, int d) : y{ y }, m{ m }, d{ d }
+// ---------------------------------------------------------------
+// implementation specific functions and structs
+// ---------------------------------------------------------------
+
+struct DaysInYear
 {
-	if (!is_valid(*this))
+	int year;
+	int days;
+	DaysInYear(int year, int days) : year{year}, days{days} { }
+};
+
+// returns current year and number of days since jan/1/current year 
+// until current month/current day/current year
+DaysInYear days_since_jan(long days)
+{
+	auto year = 1970;
+	auto d{ days };
+	while (true)
 	{
-		std::stringstream ss;
-		ss << *this;
-		error(ss.str() + " is not a valid date");
+		auto threshold = leapyear(year) ? 366 : 365;
+		if (d < threshold)
+			break;
+		d -= threshold;
+		++year;
 	}
+	return DaysInYear(year, d);
 }
 
-Date::Date()
-	: y{ default_date().year() },
-	m{ default_date().month() },
-	d{ default_date().day() } {}
-
-void Date::add_year(uint32_t n)
+int* days_in_months(int year)
 {
-	if (m == Month::feb && d == 29 && !is_leap(y + n)) // beware of leap years!
-	{ 
-		m = Month::mar; // use March 1 instead of February 29
-		d = 1;
-	}
-	y += n;
+	static auto days_in_feb = leapyear(year) ? 29 : 28;
+	static int days_in_months[]{ 31, days_in_feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	return days_in_months;
 }
 
-void Date::add_month(uint32_t n)
+// returns amount of days from jan/1/1970 until jan/1/year
+long days_untill_year(uint32_t year)
 {
-	auto years_to_add = int(std::floor(n / 12.0));
-	auto months_to_add = n % 12;
-	bool day_overflow = (is_30_day_month(m) && d > 30) 
-		|| (m == Month::feb && (is_leap(y) && d > 29 || d > 28));
-	y += years_to_add;
-	auto sum = int(m) + months_to_add;
-	if (sum > 12) // month overflow
+	long days{ 0 };
+	int y{ 1970 };
+	while (y != year)
 	{
+		auto days_in_the_year = leapyear(y) ? 366 : 365;
+		days += days_in_the_year;
 		++y;
-		m = Month(sum - 12);
 	}
-	else
-		m = Month(sum);
-
-	if (day_overflow)
-	{
-		d = 1;
-		add_month(1);
-	}
+	return days;
 }
 
-int next_val(int threshold, int val)
+// returns amount of days from jan/1/year until month/1/year
+long days_untill_month(Month month, uint32_t year)
 {
-	return val != threshold ? val + 1 : 1;
-}
-
-void Date::add_day(uint32_t n)
-{
-	if (n > 1)
-		add_day(n - 1);
-	switch (m)
+	long days{ 0 };
+	int* months = days_in_months(year);
+	for (size_t i = 0; i < (size_t(month) - 1); ++i)
 	{
-	case Month::feb:
-	{
-		if (is_leap(y))
-			d = next_val(29, d);
-		else
-			d = next_val(28, d);
-		break;
+		days += months[i];
 	}
-	case Month::jan:
-	case Month::mar:
-	case Month::may:
-	case Month::jul:
-	case Month::aug:
-	case Month::oct:
-	case Month::dec:
-		d = next_val(31, d);
-		break;
-	default:
-		d = next_val(30, d);
-	}
-
-	// handles case when next day is the first day of next month
-	if (d == 1)
-	{
-		m = Month(next_val(12, int(m)));
-		if (m == Month::jan)
-			++y;
-	}
-}
-
-// --------------------------------------------------
-// helper functions
-// --------------------------------------------------
-
-bool is_valid(const Date& d)
-{
-	bool is_valid = d.year() > 0 && (int(d.month()) > 0
-		&& int(d.month()) < 13)
-		&& d.day() > 0;
-	is_valid = is_valid && (
-		(is_31_day_month(d.month()) && d.day() < 32) ||
-		(is_30_day_month(d.month()) && d.day() < 31) ||
-		(d.month() == Month::feb && (is_leap(d.year()) && d.day() < 30) || d.day() < 29)
-		);
-	return is_valid;
-}
-
-bool is_leap(int year)
-{
-	return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
+	return days;
 }
 
 bool is_30_day_month(Month m)
@@ -122,6 +72,115 @@ bool is_30_day_month(Month m)
 bool is_31_day_month(Month m)
 {
 	return m != Month::feb && !is_30_day_month(m);
+}
+
+// ---------------------------------------------------------------
+// Date class methods definitions
+// ---------------------------------------------------------------
+
+Date::Date(uint32_t year, Month month, uint32_t day) : days{0}
+{
+	if (!is_date(year, month, day))
+	{
+		error("Error in Date::Date() - (" + std::to_string(year)
+			+ ","
+			+ std::to_string(int(month)) 
+			+ ","
+			+ std::to_string(day)
+			+ ") is not a valid date."
+		);
+	}
+	days += days_untill_year(year) + days_untill_month(month, year) + day - 1;
+}
+
+Date::Date()
+	: days{ 0 } {}
+
+int Date::year() const
+{
+	return days_since_jan(days).year;
+}
+
+int Date::day() const
+{
+	// we add one more day, because Date::days holds
+	// number of days since 1/1/1970 until current month/current day/current year
+	auto d = days_since_jan(days).days;
+	auto md = days_untill_month(month(), year());
+	return d - md + 1;
+}
+
+Month month_of_day(DaysInYear days_in_year)
+{
+	auto d = days_in_year.days;
+	auto y = days_in_year.year;
+	auto months = days_in_months(y);
+	auto leap_additive = leapyear(y) ? 1 : 0;
+	if (d < 31)
+		return Month::jan;
+	else if (d < 59 + leap_additive)
+		return Month::feb;
+	else if (d < 90 + leap_additive)
+		return Month::mar;
+	else if (d < 120 + leap_additive)
+		return Month::apr;
+	else if (d < 151 + leap_additive)
+		return Month::may;
+	else if (d < 181 + leap_additive)
+		return Month::jun;
+	else if (d < 212 + leap_additive)
+		return Month::jul;
+	else if (d < 243 + leap_additive)
+		return Month::aug;
+	else if (d < 273 + leap_additive)
+		return Month::sep;
+	else if (d < 304 + leap_additive)
+		return Month::oct;
+	else if (d < 334 + leap_additive)
+		return Month::nov;
+	else
+		return Month::dec;
+}
+
+Month Date::month() const
+{
+	auto m = month_of_day(days_since_jan(days));
+	return m;
+}
+
+void Date::add_year(uint32_t n)
+{
+	for (size_t i = 0; i < n; ++i)
+		days += 365;
+}
+
+void Date::add_month(uint32_t n)
+{
+	auto years_to_add = int(std::floor(n / 12.0));
+	auto months_to_add = n % 12;
+	if (years_to_add > 0)
+		add_year(years_to_add);
+	auto months = days_in_months(year());
+	while (months_to_add > 0)
+	{
+		days += months[int(month()) - 1];
+		--months_to_add;
+	}
+}
+
+void Date::add_day(uint32_t n)
+{
+	days += n;
+}
+
+// --------------------------------------------------
+// helper functions
+// --------------------------------------------------
+
+
+bool leapyear(int year)
+{
+	return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
 }
 
 void error(const std::string& msg)
@@ -136,73 +195,40 @@ std::ostream& operator<<(std::ostream& os, const Date& d)
 		<< ',' << d.day() << ')';
 }
 
-const Date& default_date()
+bool is_date(uint32_t year, Month month, uint32_t day)
 {
-	static const auto time{ std::time(nullptr) };
-	static const auto tm{ std::localtime(&time) };
-	
-	static Date dd{ tm->tm_year + 1900, Month(tm->tm_mon + 1), tm->tm_mday };
-	return dd;
+	bool is_valid = year >= 1970;
+	bool is_bad_day = day == 0 ||
+		(
+			(is_30_day_month(month) && day > 30) ||
+			(is_31_day_month(month) && day > 31) ||
+			(month == Month::feb && 
+				((leapyear(year) && day > 29) || (!leapyear(year) && day > 28)))
+			);
+	is_valid = is_valid && !is_bad_day;
+	return is_valid;
 }
 
-// calculates the weekday according to 
-// https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week#Implementation-dependent_methods
-Weekday day_of_week(const Date& date)
+std::istream& operator>>(std::istream& is, Date& dd)
 {
-	auto d = date.day();
-	auto m = int(date.month());
-	auto y = date.year();
-	d += m < 3 ? y-- : y - 2;
-	auto w = (23 * m / 9 + d + 4 + y / 4 - y / 100 + y / 400) % 7;
-	return Weekday(std::abs(w));
-}
-
-std::string weekday_name(Weekday wd)
-{
-	static const char* weekdays[] {
-		 "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-	};
-	return weekdays[int(wd)];
-}
-
-Date next_workday(const Date& d)
-{
-	auto wd{ day_of_week(d) };
-	auto next_wd_offset{ 0 };
-
-	switch (wd)
-	{
-	case Weekday::fri:
-		next_wd_offset += 3;
-		break;
-	case Weekday::sat:
-		next_wd_offset += 2;
-		break;
-	default:
-		++next_wd_offset;
+	int y, m, d;
+	char ch1, ch2, ch3, ch4;
+	is >> ch1 >> y >> ch2 >> m >> ch3 >> d >> ch4;
+	if (!is) return is;
+	if (ch1 != '(' || ch2 != ',' || ch3 != ',' || ch4 != ')') { // oops: format error
+		is.clear(std::ios_base::failbit); // set the fail bit
+		return is;
 	}
-
-	auto next_wd{ d };
-	next_wd.add_day(next_wd_offset);
-	return next_wd;
+	dd = Date(y, Month(m), d); // update dd
+	return is;
 }
 
-int week_of_year(const Date& d)
+bool operator==(const Date& lhs, const Date& rhs)
 {
-	auto days{ d.day() };
-	for (size_t i = 1; i < int(d.month()); ++i)
-	{
-		auto month = Month(i);
-		if (is_30_day_month(month))
-			days += 30;
-		else if (is_31_day_month(month))
-			days += 31;
-		else
-			days += is_leap(d.year()) ? 29 : 28;
-	}
-	// handle first week of the year offset
-	Weekday wd_of_jan_1 = day_of_week(Date{ d.year(), Month::jan, 1 });
-	days += int(wd_of_jan_1);
-	auto a =  int(std::ceil(days / 7.0));
-	return a;
+	return lhs.day() == rhs.day() && lhs.month() == rhs.month() && lhs.year() == rhs.year();
+}
+
+bool operator!=(const Date& lhs, const Date& rhs)
+{
+	return !(lhs == rhs);
 }
