@@ -10,4 +10,5 @@ This repository contains my implementation of solutions for problems listed in t
    - [X] Chapter 6
    - [X] Chapter 7
    - [X] Chapter 8
-   - [ ] Chapter 9
+   - [X] Chapter 9
+   - [ ] Chapter 10

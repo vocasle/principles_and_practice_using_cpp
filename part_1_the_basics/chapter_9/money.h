@@ -1,5 +1,6 @@
 // Rev 1. Complement exercise 14 of chapter 9
 // Rev 2. Complement exercise 15 of chapter 9
+// Rev 3. Complement exercise 16 of chapter 9
 
 #ifndef MONEY_H
 #define MONEY_H
@@ -20,6 +21,7 @@ private:
 
 bool is_money_valid(double money);
 std::ostream& operator<<(std::ostream& os, const Money& m);
+std::istream& operator>>(std::istream& is, Money& m);
 Money operator+(const Money& lhs, const Money& rhs);
 Money operator-(const Money& lhs, const Money& rhs);
 Money operator*(const Money& lhs, double rhs);
