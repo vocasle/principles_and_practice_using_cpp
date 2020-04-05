@@ -84,12 +84,18 @@ std::istream& operator>>(std::istream& is, Money& m)
 	is >> c1 >> c2 >> c3 >> d;
 	if (!is)
 	{
-		error("Error in operator>>() - Invalid input. Example of valid input: 'USD345.24'.");
+		is.clear();
+		std::string line;
+		std::getline(is, line);
+		error("Error in operator>>() - '" 
+			+ std::string{c1,c2,c3} 
+			+ line 
+			+ "' is not a valid input. Example of valid input: 'USD345.24'.");
 	}
 	if (!(std::isalpha(c1) && std::isalpha(c2) && std::isalpha(c3)))
 	{
 		error("Error in operator>>() - '" 
-			+ std::string({ c1, c2, c3 }) 
+			+ std::string{ c1, c2, c3 } 
 			+ "' is not a currency code. Valid currency code must comply with ISO 4217.");
 	}
 	
