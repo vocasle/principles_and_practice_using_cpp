@@ -1,4 +1,5 @@
 // Rev 1. Complement exercise 14 of chapter 9
+// Rev 2. Complement exercise 15 of chapter 9
 
 #ifndef MONEY_H
 #define MONEY_H
@@ -9,15 +10,15 @@
 class Money
 {
 public:
-	Money(long cents);
-	Money(const std::string& money);
+	Money(double money, const std::string& currency);
 	long get_cents() const { return cents; }
+	std::string get_currency() const { return currency; }
 private:
+	std::string currency;
 	long cents;
 };
 
-bool is_money_valid(const std::string& money);
-long str_to_cents(const std::string& money);
+bool is_money_valid(double money);
 std::ostream& operator<<(std::ostream& os, const Money& m);
 Money operator+(const Money& lhs, const Money& rhs);
 Money operator-(const Money& lhs, const Money& rhs);

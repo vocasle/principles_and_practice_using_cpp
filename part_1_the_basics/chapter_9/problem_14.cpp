@@ -6,12 +6,12 @@ int main()
 {
 	try
 	{
-		Money m{ "$123.25" };
-		std::cout << m << " / " << 2 << " = " << m / 2 << '\n';
+		Money m{ 123.99, "EUR" };
+		Money m2{ 45.01, "EUR" };
+		std::cout << m << " + " << m2 << " = " << m + m2 << '\n';
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	return 0;
 }
