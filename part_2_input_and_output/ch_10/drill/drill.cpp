@@ -1,4 +1,4 @@
-// This file contains solution for drill’s step 1 and 2 of chapter 10 
+// This file contains solution for drill of chapter 10 
 
 #include "point.hpp"
 
@@ -67,6 +67,11 @@ std::vector<Point> read_points_from_file(const std::string& file_name)
 	return get_points(ifs);
 }
 
+bool are_set_equals(const std::vector<Point>& lhs, const std::vector<Point>& rhs)
+{
+	return  lhs.size() == rhs.size() && lhs == rhs;
+}
+
 int main()
 {
 	std::cin.exceptions(std::cin.exceptions() | std::ios_base::badbit);
@@ -78,6 +83,11 @@ int main()
 		print_points(original_points);
 		write_points_to_file("mydata.txt", original_points);
 		auto processed_points = read_points_from_file("mydata.txt");
+		print_points(processed_points);
+		if (!are_set_equals(original_points, processed_points))
+		{
+			std::cerr << "Something's wrong!\n";
+		}
 	}
 	catch (const std::exception& e)
 	{
