@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 void prompt_for_input(const std::string& msg)
 {
@@ -43,6 +44,19 @@ void print_points(const std::vector<Point>& points)
 	}
 }
 
+void write_points_to_file(const std::string& file_name, const std::vector<Point>& points)
+{
+	std::ofstream ofs{ file_name };
+	if (!ofs)
+	{
+		error("Could not open file '" + file_name + "' for writing.");
+	}
+	for (auto& p : points)
+	{
+		ofs << p << '\n';
+	}
+}
+
 int main()
 {
 	std::cin.exceptions(std::cin.exceptions() | std::ios_base::badbit);
@@ -52,6 +66,7 @@ int main()
 	{
 		std::vector<Point> original_points = get_points();
 		print_points(original_points);
+		write_points_to_file("mydata.txt", original_points);
 	}
 	catch (const std::exception& e)
 	{
