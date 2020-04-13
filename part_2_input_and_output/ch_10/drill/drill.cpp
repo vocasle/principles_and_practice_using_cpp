@@ -35,6 +35,14 @@ std::vector<Point> get_points()
 	return points;
 }
 
+void print_points(const std::vector<Point>& points)
+{
+	for (auto& p : points)
+	{
+		std::cout << p << '\n';
+	}
+}
+
 int main()
 {
 	std::cin.exceptions(std::cin.exceptions() | std::ios_base::badbit);
@@ -43,6 +51,7 @@ int main()
 	try
 	{
 		std::vector<Point> original_points = get_points();
+		print_points(original_points);
 	}
 	catch (const std::exception& e)
 	{
