@@ -1,0 +1,1 @@
+add_executable(p2c10dr1 point.cpp point.hpp "drill.cpp")

@@ -7,3 +7,4 @@ project(principles_and_practice_using_cpp
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(part_1_the_basics)
+add_subdirectory(part_2_input_and_output)
