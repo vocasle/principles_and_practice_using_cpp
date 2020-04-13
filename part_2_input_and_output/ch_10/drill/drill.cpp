@@ -17,7 +17,7 @@ void end_of_loop(std::istream& is, char term, const std::string& msg)
 	{
 		is.clear();
 		char ch;
-		if (is >> ch && ch == term)
+		if (is >> ch && ch == term || is.eof())
 		{
 			return;
 		}
@@ -25,14 +25,14 @@ void end_of_loop(std::istream& is, char term, const std::string& msg)
 	}
 }
 
-std::vector<Point> get_points()
+std::vector<Point> get_points(std::istream& is)
 {
 	std::vector<Point> points;
-	for (Point p; std::cin >> p;)
+	for (Point p; is >> p;)
 	{
 		points.push_back(p);
 	}
-	end_of_loop(std::cin, ';', "Bad termination of input.");
+	end_of_loop(is, ';', "Bad termination of input.");
 	return points;
 }
 
@@ -57,6 +57,16 @@ void write_points_to_file(const std::string& file_name, const std::vector<Point>
 	}
 }
 
+std::vector<Point> read_points_from_file(const std::string& file_name)
+{
+	std::ifstream ifs{ file_name };
+	if (!ifs)
+	{
+		error("Could not open file '" + file_name + "' for reading.");
+	}
+	return get_points(ifs);
+}
+
 int main()
 {
 	std::cin.exceptions(std::cin.exceptions() | std::ios_base::badbit);
@@ -64,9 +74,10 @@ int main()
 	prompt_for_input("Example: (2 5) (3 5);");
 	try
 	{
-		std::vector<Point> original_points = get_points();
+		std::vector<Point> original_points = get_points(std::cin);
 		print_points(original_points);
 		write_points_to_file("mydata.txt", original_points);
+		auto processed_points = read_points_from_file("mydata.txt");
 	}
 	catch (const std::exception& e)
 	{
