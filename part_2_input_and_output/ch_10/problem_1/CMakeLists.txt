@@ -1,1 +1,0 @@
-add_executable(p2ch10pr1 problem_1.cpp)
