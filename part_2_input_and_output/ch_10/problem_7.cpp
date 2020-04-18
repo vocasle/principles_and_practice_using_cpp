@@ -55,7 +55,9 @@
 		floating-point-literal
 */
 
-#include "std_lib_facilities.h"
+#include "../../part_1_the_basics/chapter_7/std_lib_facilities.h"
+#include "roman_int.hpp"
+#include "generate_check_files.hpp"
 
 struct Variable
 {
@@ -112,6 +114,35 @@ const char constant = 'C';
 const char help = 'H';
 const char natural_log = 'N';
 
+bool is_numeral(char ch)
+{
+	static const char numerals[]{ 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
+	for (auto& n : numerals)
+	{
+		if (n == ch)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+Roman_int get_numeral(std::istream& is)
+{
+	std::ostringstream ss;
+	char ch;
+	while (is >> ch)
+	{
+		if (!is_numeral(ch))
+		{
+			is.unget();
+			break;
+		}
+		ss << ch;
+	}
+	return Roman_int{ ss.str() };
+}
+
 // Returns a Token from buffers if it is not empty or gets a Token from std::cin
 Token Token_stream::get()
 {
@@ -132,21 +163,16 @@ Token Token_stream::get()
 	case '=':
 	case '#':
 		return Token(ch);
-	case '.':
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
+	case 'I':
+	case 'V':
+	case 'X':
+	case 'L':
+	case 'C':
+	case 'D':
+	case 'M':
 	{
 		cin.unget(); // put back character to read full double later
-		double val;
-		is >> val;
+		double val = get_numeral(cin).as_int();
 		return Token(number, val);
 	}
 	default:
@@ -440,7 +466,8 @@ void calculate()
 				return;
 			default:
 				ts.unget(t);
-				cout << result << statement() << endl;
+				auto res = statement();
+				cout << result << (res == static_cast<uint32_t>(res) ? num_to_roman(res) : to_string(res)) << endl;
 			}
 		}
 		catch (runtime_error& e)
