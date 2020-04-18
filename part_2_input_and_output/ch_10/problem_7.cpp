@@ -467,7 +467,7 @@ void calculate()
 			default:
 				ts.unget(t);
 				auto res = statement();
-				cout << result << (res == static_cast<uint32_t>(res) ? num_to_roman(res) : to_string(res)) << endl;
+				cout << result << ((res == static_cast<uint32_t>(res) && res > 0) ? num_to_roman(res) : to_string(res)) << endl;
 			}
 		}
 		catch (runtime_error& e)
