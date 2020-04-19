@@ -1,26 +1,27 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <memory>
 #include "utility.hpp"
 
 void concatenate(const std::string& file1, const std::string& file2)
 {
-	std::ifstream ifs(file1);
-	if (!ifs)
+	std::ifstream in_file(file1);
+	if (!in_file)
 	{
 		error("Could not open '" + file1 + "' for reading.");
 	}
-	std::ofstream ofs(file2, std::ios_base::app);
-	if (!ofs)
+	std::ofstream out_file(file2, std::ios_base::app);
+	if (!out_file)
 	{
 		error("Could not open '" + file1 + "' for writing.");
 	}
-
-	while (!ifs.eof())
+	constexpr size_t buffer_size = 1024 * 1024;
+	std::unique_ptr<char[]> buffer = std::make_unique<char[]>(buffer_size);
+	while (in_file)
 	{
-		std::string line;
-		std::getline(ifs, line);
-		ofs << line << '\n';
+		in_file.read(buffer.get(), buffer_size);
+		out_file << buffer.get();
 	}
 }
 
