@@ -5,6 +5,8 @@
 		(bs@cs.tamu.edu) Spring 2004.
 
 	Updated 3.29.2020 to conform to exercise 1 of chapter 8.
+	Updated 19.04.2020 to conform to exercise 7 of chapter 10.
+	Updated 19.04.2020 to confor to exercise 10 of chapter 10.
 
 	Possible extensions:
 		1. Add logarithmic functions
@@ -17,6 +19,8 @@
 
 	Calculation:
 		Statement
+		From
+		To
 		Help
 		Print
 		Quit
@@ -27,6 +31,10 @@
 	Declaration:
 		"#" Name "=" Expression
 		"const" Name "=" Expression
+	From
+		"from <filename>"
+	To
+		"to <filename>"
 	Help
 		"h"
 		"H"
@@ -103,7 +111,45 @@ private:
 	vector<Variable> var_table{};
 };
 
+ifstream input_file;
+ofstream output_file;
+
+string_view trim(string_view s)
+{
+	s.remove_prefix(min(s.find_first_not_of(" \t\r\v\n"), s.size()));
+	s.remove_suffix(min(s.size() - s.find_last_not_of(" \t\r\v\n") - 1, s.size()));
+	return s;
+}
+
+void input_from_file()
+{
+	string filename;
+	getline(cin, filename);
+	input_file = ifstream{ trim(filename).data() };
+	if (!input_file)
+	{
+		error("Could not open '" + filename + "' for reading.");
+	}
+	cin.rdbuf(input_file.rdbuf());
+	cout << filename << " was set as input file.\n";
+}
+
+void output_to_file()
+{
+	string filename;
+	getline(cin, filename);
+	output_file = ofstream{ trim(filename).data() };
+	if (!output_file)
+	{
+		error("Could not open '" + filename + "' for writing.");
+	}
+	cout.rdbuf(output_file.rdbuf());
+	cout << filename << " was set as output file.\n";
+}
+
 const char let = '#';
+const char from = 'F';
+const char to = 'T';
 const char quit = 'Q';
 const char print = ';';
 const char number = '8';
@@ -195,6 +241,10 @@ Token Token_stream::get()
 				return Token(help);
 			if (s == "ln")
 				return Token(natural_log);
+			if (s == "from")
+				return Token(from);
+			if (s == "to")
+				return Token(to);
 			return Token(name, s);
 		}
 		else if (isspace(ch))
@@ -425,6 +475,12 @@ double statement()
 		break;
 	case constant:
 		result = declaration(true);
+		break;
+	case from:
+		input_from_file();
+		break;
+	case to:
+		output_to_file();
 		break;
 	default:
 		ts.unget(t);
