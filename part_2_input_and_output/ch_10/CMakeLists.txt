@@ -8,3 +8,4 @@ add_executable(p2ch10pr6 problem_6.cpp "generate_check_files.cpp" "roman_int.cpp
 add_executable(p2ch10pr7 problem_7.cpp roman_int.cpp generate_check_files.cpp)
 add_executable(p2ch10pr8 problem_8.cpp utility.cpp)
 add_executable(p2ch10pr9 problem_9.cpp utility.cpp)
+add_executable(p2ch10pr11 problem_11.cpp utility.cpp)
