@@ -2,15 +2,24 @@
 #include <string>
 #include <iostream>
 
+enum class FileType
+{
+	in, out
+};
+
 void error(const std::string& msg)
 {
 	throw std::runtime_error(msg);
 }
 
-enum class FileType
+void file_open_err(const std::string& filename, FileType type)
 {
-	in, out
-};
+	error("Could not open '" 
+		+ filename 
+		+ "' for " 
+		+ (type == FileType::in ? "reading" : "writing"));
+}
+
 
 std::string prompt_filename(const FileType& type)
 {
