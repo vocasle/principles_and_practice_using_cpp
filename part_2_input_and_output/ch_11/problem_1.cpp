@@ -1,17 +1,11 @@
 // This file contains a program that converts content of input file
 // to lowercase and stores it in output file
 
-#include <iostream>
 #include <fstream>
-#include <stdexcept>
-#include <string>
-#include <memory>
 #include <sstream>
 
-void error(const std::string& msg)
-{
-	throw std::runtime_error(msg);
-}
+#include "chapter_11.hpp"
+
 
 std::string to_lower(const std::string& line)
 {
@@ -35,28 +29,11 @@ void file_to_lower(const std::string& in_filename, const std::string& out_filena
 	{
 		error("Could not open file '" + in_filename + "' for reading.");
 	}
-	constexpr size_t buffer_size = 1024 * 1024;
-	std::unique_ptr<char[]> buffer = std::make_unique<char[]>(buffer_size);
-	while (in_file)
+	std::string line;
+	while (std::getline(in_file, line))
 	{
-		in_file.read(buffer.get(), buffer_size);
-		out_file << to_lower(buffer.get());
+		out_file << to_lower(line) << '\n';
 	}
-}
-
-enum class FileType
-{
-	in, out
-};
-
-std::string prompt_filename(const FileType& type)
-{
-	std::cout << "Please enter the name of the " 
-		<< (type == FileType::in ? "in" : "out")
-		<< " file: ";
-	std::string filename;
-	std::getline(std::cin, filename);
-	return filename;
 }
 
 int main()
