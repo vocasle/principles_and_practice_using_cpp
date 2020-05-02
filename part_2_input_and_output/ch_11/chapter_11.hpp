@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 enum class FileType
 {
@@ -10,6 +11,26 @@ enum class FileType
 void error(const std::string& msg)
 {
 	throw std::runtime_error(msg);
+}
+
+bool starts_with(const std::string& str, char ch)
+{
+	return !str.empty() && str.at(0) == ch;
+}
+
+bool ends_with(const std::string& str, char ch)
+{
+	return !str.empty() && str.at(str.size() - 1) == ch;
+}
+
+std::string to_lower(const std::string& line)
+{
+	std::ostringstream oss;
+	for (auto& ch : line)
+	{
+		oss << static_cast<char>(std::tolower(ch));
+	}
+	return oss.str();
 }
 
 void file_open_err(const std::string& filename, FileType type)

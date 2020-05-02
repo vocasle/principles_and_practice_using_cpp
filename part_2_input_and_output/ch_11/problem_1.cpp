@@ -2,20 +2,8 @@
 // to lowercase and stores it in output file
 
 #include <fstream>
-#include <sstream>
 
 #include "chapter_11.hpp"
-
-
-std::string to_lower(const std::string& line)
-{
-	std::ostringstream oss;
-	for (auto& ch : line)
-	{
-		oss << static_cast<char>(std::tolower(ch));
-	}
-	return oss.str();
-}
 
 void file_to_lower(const std::string& in_filename, const std::string& out_filename)
 {
