@@ -4,14 +4,18 @@
 //
 // Edit 1: Exercise 6
 // Edit 2: Exercise 7
+// Edit 3: Exercise 8
 
 #include "chapter_11.hpp"
 
 #include <fstream>
 #include <map>
-#include <vector>
+#include <algorithm>
 
-const std::map<std::string, std::string> contractions {
+#include "PunctStream.hpp"
+
+// small map of contractions
+const std::map<std::string, std::string> contractions{
 	{"aren't", "are not"},
 	{"can't", "cannot"},
 	{"couldn't", "could not"},
@@ -88,64 +92,20 @@ const std::map<std::string, std::string> contractions {
 	{"you've", "you have"}
 };
 
-// collects words between double quotes
-std::vector<std::string> excluded_words(std::istringstream& is)
+// extracts 'wordWith'apostrophe' from string str
+std::string get_contraction(const std::string& str, const std::string::const_iterator& it)
 {
-	std::vector<std::string> words;
-	std::string word;
-	while (is >> word)
+	auto pos = it - str.begin();
+	size_t begin = find_left(str, pos, isalpha) + 1;
+	size_t end = find_right(str, pos, isalpha);
+	if (begin <= str.size() && end <= str.size())
 	{
-		words.push_back(word);
-		if (ends_with(word, '"'))
-		{
-			break;
-		}
+		return str.substr(begin, end - begin);
 	}
-	return words;
+	return "";
 }
 
-// trims all characters and returns a contraction
-// e.g. !isn't. -> isn't
-std::string get_contraction(const std::string& str)
-{
-	std::ostringstream oss;
-	for (auto& ch : str)
-	{
-		if (isalpha(ch) || ch == '\'')
-		{
-			oss << ch;
-		}
-	}
-	return oss.str();
-}
-
-std::string replace_punct(const std::string& str);
-// processes a line from file word by word
-// replacing non letter characters with whitespace
-std::string process_line(const std::string& str)
-{
-	std::istringstream iss{ str };
-	std::string word;
-	std::ostringstream oss;
-	while (iss >> word)
-	{
-		if (starts_with(word, '"'))
-		{
-			oss << word << ' ';
-			auto excluded = excluded_words(iss);
-			for (auto& w : excluded)
-			{
-				oss << w << ' ';
-			}
-		}
-		else
-		{
-			oss << replace_punct(word) << ' ';
-		}
-	}
-	return oss.str();
-}
-
+// helper function that detects wether next and previous characters are letters
 bool is_dash_in_middle(const std::string& str, const std::string::const_iterator& it)
 {
 	auto begin = str.begin();
@@ -159,62 +119,98 @@ bool is_dash_in_middle(const std::string& str, const std::string::const_iterator
 	return false;
 }
 
-bool is_contraction(const std::string& str, const std::string::const_iterator& it)
+// callback function that keeps dash between two words intact
+void escape_dash(std::string& str, std::string::const_iterator& it)
 {
-	auto contr = get_contraction(str);
-	auto found = contractions.find(to_lower(contr));
-	return found != contractions.end();
+	if (!is_dash_in_middle(str, it))
+	{
+		str.at(it - str.begin()) = ' ';
+	}
+	++it;
 }
 
-// replaces punctuation characters with whitespace character
-// if word is a contraction it will be replaced by full form
-// e.g. I'll with I will
-std::string replace_punct(const std::string& str)
+// callback function that replaces contraction with full form
+void replace_contraction(std::string& str, std::string::const_iterator& it)
 {
-	std::ostringstream oss;
-	size_t offset{ 0 };
-	for (auto it = str.begin(); it != str.end();)
+	if (it == str.end() || it == str.begin())
 	{
-		if (ispunct(*it))
+		return;
+	}
+	auto contr = get_contraction(str, it);
+	if (!contr.empty())
+	{
+		auto repl = contractions.find(to_lower(contr));
+		if (repl != contractions.end())
 		{
-			if (*it == '\'' && is_contraction(str, it))
+			// move iterator to begining of the contraction
+			it -= contr.find('\'');
+			// restore correct case
+			if (isupper(contr.at(0)))
 			{
-				auto contr = get_contraction(str);
-				auto found = contractions.find(to_lower(contr));
-				return found->second;
-			}
-			else if (*it == '-' && is_dash_in_middle(str, it))
-			{
-				oss << *it;
-				++it;
+				replace(str, contr, capitalize(repl->second));
 			}
 			else
 			{
-				oss << ' ';
-				++it;
+				replace(str, contr, repl->second);
 			}
-		}
-		else
-		{
-			oss << *it;
-			++it;
+			// move iterator to end of the replacement
+			it += repl->second.size();
+			return;
 		}
 	}
-	return oss.str();
+	str.at(it - str.begin()) = ' ';
+	++it;
+}
+
+// callback function that keeps strings inside double quotes intact
+void escape_quotes(std::string& str, std::string::const_iterator& it)
+{
+	auto begin = it - str.begin();
+	auto end = str.find('"', begin + 1);
+	if (end != std::string::npos)
+	{
+		auto substr = str.substr(begin, end - begin + 1);
+		it += substr.size();
+	}
+	else
+	{
+		++it;
+	}
+}
+
+// constructs a dictionary of the words that were found in the file
+std::vector<std::string> get_dictionary(const std::string& file_name)
+{
+	std::ifstream file{ file_name };
+	if (!file)
+	{
+		error("Could not open '" + file_name + "' for reading.");
+	}
+	PunctStream ps{ file, ";:,.?!()\"{}-<>/&$@#%^'*|~", true, '*' };
+	ps.register_callback(replace_contraction, '\'');
+	ps.register_callback(escape_dash, '-');
+	ps.register_callback(escape_quotes, '"');
+	std::vector<std::string> words;
+	std::string word;
+	while (ps >> word)
+	{
+		words.push_back(word);
+	}
+	std::sort(words.begin(), words.end());
+	remove_duplicates(words);
+	return words;
 }
 
 int main()
 {
 	auto filename = prompt_filename(FileType::in);
-	std::ifstream file{ filename };
-	if (!file)
+	try
 	{
-		std::cerr << "Could not open file '" << filename << "' for reading.";
-		return -1;
+		auto dict = get_dictionary(filename);
+		print_vector(dict);
 	}
-	std::string line;
-	while (std::getline(file, line))
+	catch (const std::exception& e)
 	{
-		std::cout << process_line(line) << '\n';
+		std::cerr << e.what() << std::endl;
 	}
 }
