@@ -9,3 +9,4 @@ add_executable(p2ch11pr9 "problem_9.cpp" "BinaryToText.cpp" "TextToBinary.cpp" "
 add_executable(p2ch11pr10 "problem_10.cpp" "chapter_11.cpp" "chapter_11.hpp")
 add_executable(p2ch11pr12 "problem_12.cpp" "chapter_11.cpp" "chapter_11.hpp")
 add_executable(p2ch11pr13 "problem_13.cpp" "chapter_11.cpp" "chapter_11.hpp")
+add_executable(p2ch11pr14 "problem_14.cpp" "chapter_11.cpp" "chapter_11.hpp")
