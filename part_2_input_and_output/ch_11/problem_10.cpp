@@ -1,3 +1,5 @@
+// This file contains solution for exercise 10 and 11 of chapter 11
+
 #include <vector>
 #include <string>
 #include <iostream>
@@ -12,7 +14,7 @@ void print_vector(const std::vector<std::string>& vec, const std::string& del)
 }
 
 // splits string str into vector of strings
-std::vector<std::string> split(const std::string& str, const std::string& delim)
+std::vector<std::string> split(const std::string& str, const std::string& delim = " ")
 {
 	auto word = std::string{};
 	auto words = std::vector<std::string>{};
