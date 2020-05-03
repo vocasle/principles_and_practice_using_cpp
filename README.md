@@ -12,4 +12,6 @@ This repository contains my implementation of solutions for problems listed in t
    - [X] Chapter 8
    - [X] Chapter 9
    - [X] Chapter 10
-   - [ ] Chapter 11
+2. Part II: Input and Output
+   - [X] Chapter 11
+   - [ ] Chapter 12
