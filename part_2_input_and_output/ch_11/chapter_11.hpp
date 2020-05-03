@@ -30,4 +30,7 @@ std::string prompt_filename(const FileType& type);
 std::string prompt(const std::string& msg);
 
 std::string capitalize(const std::string& str);
+
+// splits string str into vector of strings
+std::vector<std::string> split(const std::string& str, const std::string& delim = " ");
 #endif // !CHAPTER_11_HPP
