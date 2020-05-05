@@ -152,8 +152,9 @@ public:
 		if (a.attached)error("attempt to copy attached shape");
 	}
 	*/
-	Shape(const Shape&) = delete;
-	Shape& operator=(const Shape&) = delete;
+	// Those two lines were commented out because it was not possible to use default and copy constructors
+	//Shape(const Shape&) = delete;
+	//Shape& operator=(const Shape&) = delete;
 private:
 	vector<Point> points;	// not used by all shapes
 	Color lcolor {fl_color()};
@@ -186,7 +187,6 @@ struct Line : Shape {
 };
 
 struct Rectangle : Shape {
-
 	Rectangle(Point xy, int ww, int hh) :w{ ww }, h{ hh }
 	{
 		if (h<=0 || w<=0) error("Bad rectangle: non-positive side");
