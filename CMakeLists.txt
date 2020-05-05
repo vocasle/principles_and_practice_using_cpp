@@ -6,7 +6,7 @@ project(principles_and_practice_using_cpp
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(FLTK_DIR "E:\\Libs\\FLTK-1.3\\CMake")
+set(FLTK_DIR "$ENV{FLTK_HOME}")
 find_package(FLTK REQUIRED NO_MODULE)
 
 add_subdirectory(part_1_the_basics)
