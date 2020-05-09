@@ -18,3 +18,15 @@ target_link_libraries(p2ch12pr5 graphics)
 
 add_executable(p2ch12pr6 problem_6.cpp)
 target_link_libraries(p2ch12pr6 graphics)
+
+add_executable(p2ch12pr7 problem_7.cpp)
+target_link_libraries(p2ch12pr7 graphics)
+
+add_executable(p2ch12pr8 problem_8.cpp)
+target_link_libraries(p2ch12pr8 graphics)
+
+add_executable(p2ch12pr9 problem_9.cpp)
+target_link_libraries(p2ch12pr9 graphics)
+
+add_executable(p2ch12pr11 problem_11.cpp)
+target_link_libraries(p2ch12pr11 graphics)
