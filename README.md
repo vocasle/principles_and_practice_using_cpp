@@ -32,4 +32,5 @@ in top `CMakeLists.txt` to directory that contains
    - [X] Chapter 10
 2. Part II: Input and Output
    - [X] Chapter 11
-   - [ ] Chapter 12
+   - [X] Chapter 12
+   - [ ] Chapter 13
