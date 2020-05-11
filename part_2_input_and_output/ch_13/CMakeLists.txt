@@ -1,0 +1,2 @@
+add_executable(p2ch13drill drill.cpp)
+target_link_libraries(p2ch13drill graphics)
