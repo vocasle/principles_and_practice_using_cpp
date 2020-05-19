@@ -9,3 +9,9 @@ target_link_libraries(p2ch13pr2 graphics)
 
 add_executable(p2ch13pr3 problem_3.cpp "Arrow.cpp" "Arrow.hpp")
 target_link_libraries(p2ch13pr3 graphics)
+
+add_executable(p2ch13pr4 problem_4.cpp connection_points.hpp)
+target_link_libraries(p2ch13pr4 graphics)
+
+add_executable(p2ch13pr5 problem_5.cpp connection_points.hpp)
+target_link_libraries(p2ch13pr5 graphics)
