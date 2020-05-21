@@ -13,24 +13,12 @@ Regular_polygon::Regular_polygon(Point center, unsigned int circumradius, unsign
 Polygon gen_poly(int circumradius, int vertices, int side_length, const Point& center)
 {
 	auto points = vector<Point>();
-	auto p = Point{ center.x, center.y + circumradius }; // Starting point.
-	for (auto i = 0; i < vertices; ++i)
+	static constexpr auto pi = 3.14159265;
+	for (auto n = 0; n < vertices; ++n)
 	{
-		auto [v1, v2] = find_third_vertex(p, center, circumradius, side_length, circumradius);
-		if (find(points.begin(), points.end(), v1) == points.end())
-		{
-			points.push_back(v1);
-			p = v1;
-		}
-		else if (find(points.begin(), points.end(), v2) == points.end())
-		{
-			points.push_back(v2);
-			p = v2;
-		}
-		else
-		{
-			error("Duplicate point.");
-		}
+		auto x = circumradius * cos(2 * pi * n / vertices) + center.x;
+		auto y = circumradius * sin(2 * pi * n / vertices) + center.y;
+		points.emplace_back(x, y);
 	}
 	auto poly = Polygon{};
 	for (auto& point : points)
