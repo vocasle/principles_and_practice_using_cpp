@@ -27,3 +27,6 @@ target_link_libraries(p2ch13pr9 graphics)
 
 add_executable(p2ch13pr11 problem_11.cpp)
 target_link_libraries(p2ch13pr11 graphics)
+
+add_executable(p2ch13pr12 problem_12.cpp)
+target_link_libraries(p2ch13pr12 graphics)
