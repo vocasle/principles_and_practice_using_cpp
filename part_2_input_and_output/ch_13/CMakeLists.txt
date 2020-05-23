@@ -33,3 +33,18 @@ target_link_libraries(p2ch13pr12 graphics)
 
 add_executable(p2ch13pr13 problem_13.cpp)
 target_link_libraries(p2ch13pr13 graphics)
+
+add_executable(p2ch13pr14 problem_14.cpp "Right_triangle.cpp" "Regular_polygon.cpp")
+target_link_libraries(p2ch13pr14 graphics)
+
+add_executable(p2ch13pr15 problem_15.cpp "Right_triangle.cpp")
+target_link_libraries(p2ch13pr15 graphics)
+
+add_executable(p2ch13pr16 problem_16.cpp "Regular_polygon.cpp")
+target_link_libraries(p2ch13pr16 graphics)
+
+add_executable(p2ch13pr18 problem_18.cpp "Poly.cpp")
+target_link_libraries(p2ch13pr18 graphics)
+
+add_executable(p2ch13pr19 problem_19.cpp "Star.cpp" "Regular_polygon.cpp")
+target_link_libraries(p2ch13pr19 graphics)
