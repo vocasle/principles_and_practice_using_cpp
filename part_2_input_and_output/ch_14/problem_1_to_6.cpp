@@ -90,12 +90,16 @@ public:
 		if (fill_color().visibility())
 		{
 			fl_color(fill_color().as_int());
-			for (auto i = pi / 2; i > 0; i -= pi / 45)
+			for (auto i = 0; i < radius(); i += 2)
 			{
-				auto x = center().x + radius() * cos(i);
-				auto y = center().y + radius() * sin(i);
+				auto b = acos((i * 1.0) / radius());
+				auto a = pi / 2 - b;
+				auto x = center().x + radius() * cos(a);
+				auto y = center().y + radius() * sin(a);
+				// l1: draws a line uder central diameter (crosses center of circle and is parallel to X axis)
 				fl_line(x, y, center().x - (x - center().x), y);
-				fl_line(x, center().y - (y - center().y), center().x - (x - center().x), center().y - (y - center().y));
+				// l2: mirrors l1 over central diameter 
+				fl_line(x, center().y - i, center().x - (x - center().x), center().y - i);
 			}
 			fl_color(color().as_int());	// reset color
 		}
