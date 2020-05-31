@@ -11,3 +11,6 @@ target_link_libraries(p2ch14pr8 graphics)
 
 add_executable(p2ch14pr9 problem_9.cpp)
 target_link_libraries(p2ch14pr9 graphics)
+
+add_executable(p2ch14pr10 problem_10.cpp Pseudo_window.cpp)
+target_link_libraries(p2ch14pr10 graphics)
