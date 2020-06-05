@@ -14,3 +14,12 @@ target_link_libraries(p2ch14pr9 graphics)
 
 add_executable(p2ch14pr10 problem_10.cpp Pseudo_window.cpp)
 target_link_libraries(p2ch14pr10 graphics)
+
+add_executable(p2ch14pr11 problem_11.cpp Binary_tree.cpp)
+target_link_libraries(p2ch14pr11 graphics)
+
+add_executable(p2ch14pr12 problem_12.cpp Binary_tree.cpp)
+target_link_libraries(p2ch14pr12 graphics)
+
+add_executable(p2ch14pr13 problem_13.cpp Binary_tree.cpp)
+target_link_libraries(p2ch14pr13 graphics)
