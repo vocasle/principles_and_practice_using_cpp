@@ -51,6 +51,7 @@ void Binary_tree::draw_node(Node* n) const
 	if (fill_color().visibility())
 	{
 		fl_color(fill_color().as_int());
+		n->t.draw_lines();
 		fl_pie(n->p.x + center.x - 5, n->p.y + center.y - 5, 10, 10, 0, 360);
 		fl_color(color().as_int());	// reset color
 	}
@@ -91,7 +92,9 @@ void  Binary_tree::gen_points(Node* n, vector<Point>& points)
 	if (!isExternal(n))
 		gen_points(n->left, points);
 	Point p = Point(points.size() * scale, depth(n) * scale);
+	Text t = Text{ {p.x + center.x, p.y + center.y}, to_string(depth(n)) };
 	n->p = p;
+	n->t = t;
 	points.emplace_back(p);
 	if (!isExternal(n))
 		gen_points(n->right, points);
