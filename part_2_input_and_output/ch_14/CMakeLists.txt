@@ -28,3 +28,5 @@ add_executable(p2ch14pr14 problem_14.cpp Binary_tree.cpp)
 target_link_libraries(p2ch14pr14 graphics)
 
 add_executable(p2ch14pr15 problem_15.cpp)
+add_executable(p2ch14pr16 problem_16.cpp)
+target_link_libraries(p2ch14pr16 graphics)
