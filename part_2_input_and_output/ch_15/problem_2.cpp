@@ -7,11 +7,12 @@ typedef std::function<double(double)> func;
 
 namespace gl = Graph_lib;
 
+template <typename T>
 class Fct : public gl::Shape
 {
 public:
-	Fct(func f, double r1, double r2, gl::Point orig, int count = 100, double xscale = 25, double yscale = 25) :
-		m_func{ f }, m_r1{ r1 }, m_r2{ r2 }, m_orig{ orig }, m_count{ count }, m_xscale{ xscale }, m_yscale{ yscale }
+	Fct(func f, double r1, double r2, gl::Point orig, T param, int count = 100, double xscale = 25, double yscale = 25) :
+		m_func{ f }, m_r1{ r1 }, m_r2{ r2 }, m_orig{ orig }, m_param{ param }, m_count{ count }, m_xscale{ xscale }, m_yscale{ yscale }
 	{
 		if (r2 - r1 <= 0) error("bad graphing range");
 		if (count <= 0) error("non-positive graphing count");
@@ -50,6 +51,7 @@ private:
 	double m_xscale = 25.0;
 	double m_yscale = 25.0;
 	vector<gl::Point> m_points;
+	T m_param;
 	void update_points()
 	{
 		if (!m_points.empty())
@@ -78,7 +80,7 @@ double hyperbola(double x)
 int main()
 {
 	gl::Window win = gl::Window({ 100, 100 }, 800, 600, "Exercise 2");
-	Fct fun = Fct(parabola, -3.14, 3.14, gl::Point(400, 300));
+	Fct<int> fun = Fct<int>(parabola, -3.14, 3.14, gl::Point(400, 300), 100);
 	fun.set_func(hyperbola);
 	fun.set_range_from(-10.0);
 	fun.set_range_to(11);
