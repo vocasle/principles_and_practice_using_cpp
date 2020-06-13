@@ -8,6 +8,7 @@
 //#include<cmath>
 #include "fltk.h"
 #include "std_lib_facilities.h"
+#include <functional>
 
 namespace Graph_lib {
 // defense against ill-behaved Linux macros:
@@ -111,7 +112,8 @@ public:
 	int size() const { return v.size(); }
 };
 
-typedef double Fct(double);
+//typedef double Fct(double);
+typedef function<double(double)> Fct;
 
 class Shape  {	// deals with color and style, and holds sequence of lines
 protected:
