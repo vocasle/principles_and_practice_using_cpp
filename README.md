@@ -35,4 +35,5 @@ in top `CMakeLists.txt` to directory that contains
    - [X] Chapter 12
    - [X] Chapter 13
    - [X] Chapter 14
-   - [ ] Chapter 15
+   - [X] Chapter 15
+   - [ ] Chapter 16
