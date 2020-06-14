@@ -20,3 +20,6 @@ target_link_libraries(p2ch15pr8 graphics)
 
 add_executable(p2ch15pr9 problem_9.cpp Bar.cpp Bar.hpp)
 target_link_libraries(p2ch15pr9 graphics)
+
+add_executable(p2ch15pr11 problem_11.cpp Bar.cpp Bar.hpp)
+target_link_libraries(p2ch15pr11 graphics)

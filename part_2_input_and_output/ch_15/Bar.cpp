@@ -12,7 +12,10 @@ Bar::Bar(const Graph_lib::Point& bl, const vector<double>& values, int xscale, i
 	for (const double& val : values)
 	{
 		int height = int(yscale * val);
-		m_bars.push_back(Graph_lib::Rectangle({ bl.x + xscale * n, bl.y - height }, xscale, height));
+		if (height < 0)
+			m_bars.push_back(Graph_lib::Rectangle({ bl.x + xscale * n, bl.y }, xscale, -height));
+		else
+			m_bars.push_back(Graph_lib::Rectangle({ bl.x + xscale * n, bl.y - height }, xscale, height));
 		++n;
 	}
 	m_lbl.move(bl.x + (xscale * values.size()) / 2, bl.y + m_graph_title_size);
