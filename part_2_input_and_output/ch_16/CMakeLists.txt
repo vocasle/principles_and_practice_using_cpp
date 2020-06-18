@@ -3,3 +3,18 @@ target_link_libraries(p2ch16dr graphics)
 
 add_executable(p2ch16pr1 problem_1.cpp)
 target_link_libraries(p2ch16pr1 graphics)
+
+add_executable(p2ch16pr2 problem_2.cpp)
+target_link_libraries(p2ch16pr2 graphics)
+
+add_executable(p2ch16pr3 problem_3.cpp)
+target_link_libraries(p2ch16pr3 graphics)
+
+add_executable(p2ch16pr4 problem_4.cpp ../ch_13/Regular_polygon.cpp)
+target_link_libraries(p2ch16pr4 graphics)
+
+add_executable(p2ch16pr5 problem_5.cpp)
+target_link_libraries(p2ch16pr5 graphics)
+
+add_executable(p2ch16pr6 problem_6.cpp)
+target_link_libraries(p2ch16pr6 graphics)
