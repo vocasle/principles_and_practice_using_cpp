@@ -21,6 +21,7 @@ class LinkedList
 {
 public:
 	LinkedList();
+	virtual ~LinkedList();
 	void addFront(Node* n);
 	void removeFront();
 	Node* find(const std::string& s) const;
@@ -52,6 +53,12 @@ int main()
 
 LinkedList::LinkedList(): _size{0}, _head{nullptr}
 {
+}
+
+LinkedList::~LinkedList()
+{
+	while (!empty())
+		removeFront();
 }
 
 void LinkedList::addFront(Node* n)
