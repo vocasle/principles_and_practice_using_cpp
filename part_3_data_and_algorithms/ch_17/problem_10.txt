@@ -1,0 +1,2 @@
+If number of characters entered is bigger than the size of array of character than program will crash with access violation exception.
+In my implementation of exercise 7 array grows dynamically so access violation exception due to the problem above should not happen. OOM exception could happen if string from cin is big enough.

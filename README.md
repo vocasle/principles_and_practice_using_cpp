@@ -4,7 +4,7 @@ This repository contains my implementation of solutions for problems listed in t
 
 ### Prerequisites
 
-1. C++ compiler that supports C++17.
+1. C++ compiler that supports C++17. It was tested on MSVC (VS 2019).
 2. CMake 3.15+.
 3. To compile exercises from chapter 12-16 FLTK 1.3 is required.
 
@@ -36,4 +36,7 @@ in top `CMakeLists.txt` to directory that contains
    - [X] Chapter 13
    - [X] Chapter 14
    - [X] Chapter 15
-   - [X] Chapter 16
+   - [X] Chapter 16 (contains some facilities that are available on Windows)
+3. Part III: Data and Algorithms
+   - [X] Chapter 17
+   - [ ] Chapter 18

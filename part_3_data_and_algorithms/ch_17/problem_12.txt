@@ -1,0 +1,5 @@
+There are 
+	Link* find(const std::string& s);
+	const Link* find(const std::string& s) const;
+
+because there might be some cases, when changing the Link is not wanted, in this situation it is better to use const Link* find(const std::string& s) const
