@@ -2,6 +2,7 @@
 // Created by Nikita Elsakov on 24.02.2020.
 //
 #include <iostream>
+#include <limits>
 #include <string>
 #include <algorithm>
 #include <cstdlib>
@@ -34,9 +35,9 @@ double toMeters(double length, const std::string& unit)
 
 int main()
 {
-	double largest{ INT_MIN };
+	double largest{ std::numeric_limits<int>::max() };
 	std::string largestUnit = "m";
-	double smallest{ INT_MAX };
+	double smallest{ std::numeric_limits<int>::min() };
 	std::string smallestUnit = "m";
 	std::vector<double> lengths{};
 
