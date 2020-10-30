@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <cassert>
+#include <sstream>
 
 int main()
 {
@@ -18,8 +19,9 @@ int main()
 			auto as_int = rint.as_int();
 			auto compare_with = it->first;
 			auto as_str = it->second;
-			assert(compare_with == as_int, 
-				as_str + " == " + std::to_string(as_int));
+			std::stringstream ss;
+			ss << as_str << " == " << as_int;
+			assert((ss.str(), compare_with == as_int));
 		}
 		
 		std::cout << "Test passed\n";
