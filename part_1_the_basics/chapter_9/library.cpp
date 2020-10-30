@@ -4,6 +4,7 @@
 #include "library.h"
 
 #include <sstream>
+#include <algorithm>
 
 void Library::add_book(const Book& book)
 {
