@@ -28,6 +28,7 @@ Article:
 #include <vector>
 #include <stdexcept>
 #include <sstream>
+#include <algorithm>
 
 void error(const std::string& msg)
 {
