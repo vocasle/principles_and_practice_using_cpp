@@ -93,7 +93,7 @@ const std::map<std::string, std::string> contractions{
 };
 
 // extracts 'wordWith'apostrophe' from string str
-std::string get_contraction(const std::string& str, const std::string::const_iterator& it)
+std::string get_contraction(const std::string& str, const std::string::iterator& it)
 {
 	auto pos = it - str.begin();
 	size_t begin = find_left(str, pos, isalpha) + 1;
@@ -106,7 +106,7 @@ std::string get_contraction(const std::string& str, const std::string::const_ite
 }
 
 // helper function that detects wether next and previous characters are letters
-bool is_dash_in_middle(const std::string& str, const std::string::const_iterator& it)
+bool is_dash_in_middle(const std::string& str, const std::string::iterator& it)
 {
 	auto begin = str.begin();
 	auto end = str.end();
@@ -120,7 +120,7 @@ bool is_dash_in_middle(const std::string& str, const std::string::const_iterator
 }
 
 // callback function that keeps dash between two words intact
-void escape_dash(std::string& str, std::string::const_iterator& it)
+void escape_dash(std::string& str, std::string::iterator& it)
 {
 	if (!is_dash_in_middle(str, it))
 	{
@@ -130,7 +130,7 @@ void escape_dash(std::string& str, std::string::const_iterator& it)
 }
 
 // callback function that replaces contraction with full form
-void replace_contraction(std::string& str, std::string::const_iterator& it)
+void replace_contraction(std::string& str, std::string::iterator& it)
 {
 	if (it == str.end() || it == str.begin())
 	{
@@ -163,7 +163,7 @@ void replace_contraction(std::string& str, std::string::const_iterator& it)
 }
 
 // callback function that keeps strings inside double quotes intact
-void escape_quotes(std::string& str, std::string::const_iterator& it)
+void escape_quotes(std::string& str, std::string::iterator& it)
 {
 	auto begin = it - str.begin();
 	auto end = str.find('"', begin + 1);
@@ -207,7 +207,7 @@ int main()
 	try
 	{
 		auto dict = get_dictionary(filename);
-		print_vector(dict);
+		print_vector(dict, ' ');
 	}
 	catch (const std::exception& e)
 	{
