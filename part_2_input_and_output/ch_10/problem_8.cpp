@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <cstring>
 #include "utility.hpp"
 
 void concatenate(const std::string& file1, const std::string& file2)
