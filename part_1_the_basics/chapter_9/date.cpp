@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <ctime>
+#include <cmath>
 
 // ---------------------------------------------------------------
 // implementation specific functions and structs
