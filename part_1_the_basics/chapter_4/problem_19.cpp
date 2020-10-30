@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 
 int main()
 {
