@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <cmath>
 
 static const std::map<uint32_t, std::string> numerals{
 	{1, "I"},
