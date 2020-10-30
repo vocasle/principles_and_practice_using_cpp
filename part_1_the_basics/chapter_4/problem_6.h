@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 std::vector<std::string> spelledDigits{ "zero", "one", "two", "three", "four", "five",
 											"six", "seven", "eight", "nine", "dot" };
