@@ -5,6 +5,7 @@
 #include "money.h"
 
 #include <stdexcept>
+#include <climits>
 
 void error(const std::string& msg)
 {
