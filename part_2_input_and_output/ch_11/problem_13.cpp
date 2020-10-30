@@ -1,6 +1,7 @@
 #include "chapter_11.hpp"
 
 #include <fstream>
+#include <algorithm>
 
 void reverse_strings(const std::string& from, const std::string& to)
 {
