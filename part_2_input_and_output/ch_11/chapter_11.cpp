@@ -5,15 +5,6 @@ void error(const std::string& msg)
 	throw std::runtime_error(msg);
 }
 
-template<typename T>
-void print_vector(const std::vector<T>& vec, char delim)
-{
-	for (const T& el : vec)
-	{
-		std::cout << el << delim;
-	}
-}
-
 bool starts_with(const std::string& str, char ch)
 {
 	return !str.empty() && str.at(0) == ch;

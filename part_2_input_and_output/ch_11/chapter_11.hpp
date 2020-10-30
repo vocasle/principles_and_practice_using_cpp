@@ -14,7 +14,13 @@ enum class FileType
 void error(const std::string& msg);
 
 template<typename T>
-void print_vector(const std::vector<T>& vec, char delim = '\n');
+void print_vector(const std::vector<T>& vec, char delim = '\n')
+{
+	for (const T& el : vec)
+	{
+		std::cout << el << delim;
+	}
+}
 
 bool starts_with(const std::string& str, char ch);
 
