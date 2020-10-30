@@ -11,6 +11,8 @@ find_package(FLTK NO_MODULE)
 
 add_subdirectory(part_1_the_basics)
 add_subdirectory(part_2_input_and_output)
-add_subdirectory(thirdparties/graphics)
+if(FLTK_DIR)
+	add_subdirectory(thirdparties/graphics)
+endif()
 
 add_subdirectory(part_3_data_and_algorithms)
