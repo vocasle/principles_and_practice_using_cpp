@@ -11,7 +11,7 @@
 // PunctStream allows to register callback functions for specific characters
 // the callback function has to have signature: 
 // void my_callback(std::string&, std::string::const_iterator&)
-using callback = std::function<void(std::string&, std::string::const_iterator&)>;
+using callback = std::function<void(std::string&, std::string::iterator&)>;
 
 // PunctStream allows to read from source (file or another std::istream) line by line.
 // Each line is processed character by character. If character is one of chars in m_repl_list

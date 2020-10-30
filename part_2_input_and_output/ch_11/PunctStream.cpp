@@ -38,7 +38,7 @@ PunctStream& PunctStream::operator>>(std::string& str)
 		std::string line;
 		std::getline(m_src, line);
 		// process the line from the source (e.g. file or std::cin)
-		for (auto it = line.begin(); it != line.end();)
+		for (std::string::iterator it = line.begin(); it != line.end();)
 		{
 			if (is_whitespace(*it))
 			{
