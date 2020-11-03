@@ -6,3 +6,4 @@
 /CMakeSettings.json
 /part_1_the_basics/out/build/x64-Debug
 build/
+.vscode/
