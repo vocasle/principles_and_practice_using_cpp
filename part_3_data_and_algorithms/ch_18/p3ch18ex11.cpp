@@ -10,6 +10,8 @@
 
 typedef std::string Elem;
 
+
+#ifndef NDEBUG
 static int ALLOCATIONS = 0;
 
 void* operator new(size_t count)
@@ -23,6 +25,7 @@ void operator delete(void* ptr)
 	ALLOCATIONS--;
 	free(ptr);
 }
+#endif // !NDEBUG
 
 
 class SkipList
@@ -74,16 +77,13 @@ int main()
 			assert((n != nullptr), "inserted node is null");
 			assert((n == list.Find(i)), "could not find inserted node");
 		}
-		//list.Print();
-		//std::cout << "\n\n";
+		
 		for (int i = 9; i >= 0; i--)
 		{
 			list.Remove(i);
 			std::ostringstream buf;
 			buf << "Node with key=" << i << " was not deleted!";
 			assert((list.Find(i) == nullptr) && buf.str().c_str());
-			//list.Print();
-			//std::cout << "\n\n";
 			std::cout << "list.Size()=" << list.Size() << "\n";
 		}
 	}
