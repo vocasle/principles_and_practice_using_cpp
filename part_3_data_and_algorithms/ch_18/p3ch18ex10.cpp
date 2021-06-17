@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <cstring>
 
 bool is_palindrome(const char s[], int n)
 // s points to the first character of an array of n characters

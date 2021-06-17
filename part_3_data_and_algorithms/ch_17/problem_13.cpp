@@ -251,4 +251,6 @@ Link* Link::add_ordered(Link* n)
 			return n;
 		}
 	}
+
+    return n;
 }

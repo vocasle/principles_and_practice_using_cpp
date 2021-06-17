@@ -105,7 +105,7 @@ bool is_palindrome(const char* first, const char* last)
 }
 
 
-void main()
+int  main()
 {
 	const char* str = "OTTO";
 	const char* str2 = "Otto";

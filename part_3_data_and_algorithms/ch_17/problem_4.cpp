@@ -19,7 +19,7 @@ char* strdup(const char* s)
 
 int main()
 {
-	char* str1 = "HELLO, WORLD!";
+	const char* str1 = "HELLO, WORLD!";
 	char* str2 = strdup(str1);
 	std::cout << str1 << " == " << str2 << std::endl;
 	delete[] str2;

@@ -60,7 +60,7 @@ char* cat_dot(const char* s1, const char* s2, const char* delim)
 	return begin;
 }
 
-void main()
+int  main()
 {
 	const char* str = cat_dot("John", "Doe");
 	const char* str2 = cat_dot("John", "Doe", " Abraham ");

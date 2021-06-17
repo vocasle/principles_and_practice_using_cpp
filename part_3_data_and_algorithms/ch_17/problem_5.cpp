@@ -26,7 +26,7 @@ char* findx(const char* s, const char* x)
 
 int main()
 {
-	char* str = "Hello, world, this is a beautifull world!";
+	const char* str = "Hello, world, this is a beautifull world!";
 	char* substr = findx(str, "world!");
 	if (substr)
 	{

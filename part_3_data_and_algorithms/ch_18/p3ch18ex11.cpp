@@ -74,8 +74,8 @@ int main()
 		for (int i = 0; i < 10; i++)
 		{
 			Node* n = list.Insert(i, "NEW_NODE" + std::to_string(i));
-			assert((n != nullptr), "inserted node is null");
-			assert((n == list.Find(i)), "could not find inserted node");
+			assert((n != nullptr) &&  "inserted node is null");
+			assert((n == list.Find(i)) && "could not find inserted node");
 		}
 		
 		for (int i = 9; i >= 0; i--)
@@ -178,11 +178,11 @@ Node* SkipList::Insert(int inKey, const Elem& inVal)
 		}
 		prev = node;
 
-		assert((node->next != nullptr), "new node does not have next");
-		assert((node->prev != nullptr), "new node does not have prev");
+		assert((node->next != nullptr) && "new node does not have next");
+		assert((node->prev != nullptr) && "new node does not have prev");
 		if (idx == upperNodes.size() - 1)
 		{
-			assert((upper->bot == nullptr), "inserting not in bottom");
+			assert((upper->bot == nullptr) && "inserting not in bottom");
 		}
 	}
 
