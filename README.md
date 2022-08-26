@@ -14,9 +14,9 @@ This repository contains my implementation of solutions for problems listed in t
 2. Checkout branch `branch-1.3`.
 3. Follow instructions for your OS from [README.CMake.txt](https://github.com/fltk/fltk/blob/master/README.CMake.txt) to build the library.
 4. Set `FLTK_DIR` variable, i.e. replace `$ENV{FLTK_HOME}` in
- `set(FLTK_DIR "$ENV{FLTK_HOME}")` 
+ `set(FLTK_DIR "$ENV{FLTK_HOME}")`
 in top `CMakeLists.txt` to directory that contains
-`FLTKConfig.cmake`, 
+`FLTKConfig.cmake`,
 `FLTK-Targets.cmake`, `FLTK-Targets-release.cmake`,
 `UseFLTK.cmake`.
 
@@ -39,4 +39,5 @@ in top `CMakeLists.txt` to directory that contains
    - [X] Chapter 16 (contains some facilities that are available on Windows)
 3. Part III: Data and Algorithms
    - [X] Chapter 17
-   - [ ] Chapter 18
+   - [X] Chapter 18 (the last exercise is skiped)
+   - [ ] Chapter 19
